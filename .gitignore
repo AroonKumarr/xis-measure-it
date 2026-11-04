@@ -1,0 +1,64 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Mac OS metadata
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE / Editor configuration
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Large weights / intermediate outputs
+*.pth
+*.pt
+*.onnx
+models/checkpoints/
+
+# Raw and intermediate image archives
+*.zip
+*.tar.gz
+dataset/raw/*.JPG
+dataset/raw/*.jpg
+dataset/undistorted/*.JPG
+dataset/undistorted/*.jpg
+calibration/images/*.JPG
+calibration/images/*.jpg
+
+# Local scratch and logs
+scratch/
+logs/
+*.log
