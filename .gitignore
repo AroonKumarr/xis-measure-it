@@ -65,3 +65,5 @@ scratch/
 logs/
 *.log
 measurement/reports/test_scratch/
+measurement/reports/measure_*.json
+measurement/reports/measure_overlay_*.jpg
