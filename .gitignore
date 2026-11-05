@@ -57,6 +57,8 @@ dataset/undistorted/*.JPG
 dataset/undistorted/*.jpg
 calibration/images/*.JPG
 calibration/images/*.jpg
+calibration/outputs/undistorted_samples/*.JPG
+calibration/outputs/undistorted_samples/*.jpg
 
 # Local scratch and logs
 scratch/
