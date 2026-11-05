@@ -204,7 +204,7 @@ python3 measurement/tilt_analysis.py
 > In our empirical ablation table in `docs/Objectives.md` and `measurement/reports/fresh_calliper_report.md`:  
 > - On `IMG_8072.JPG`, raw error was $3.06\text{ mm}$ versus undistorted error of $1.02\text{ mm}$ — skipping undistortion worsened length error by **$+2.04\text{ mm}$**.  
 > - On `IMG_8030.JPG`, raw error was $6.22\text{ mm}$ versus undistorted error of $4.57\text{ mm}$ — skipping undistortion worsened error by **$+1.65\text{ mm}$**.  
-> - Across our 10-trial benchmark, undistortion improved length accuracy in 7 out of 10 instances with an average error reduction of **$+1.35\text{ mm}$**."
+> - Across our 10-trial benchmark, undistortion improved length accuracy in 7 out of 10 instances with an average error reduction of **$+1.15\text{ mm}$** on the improved instances (+0.28 mm net across all 10 instances)."
 
 #### Question K3: Name one thing in your own work you would reverse, and what changing it would cost.
 > **Answer:**  

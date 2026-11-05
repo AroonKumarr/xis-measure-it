@@ -78,7 +78,7 @@ Direct comparison between raw (distorted) and calibrated undistorted photographs
 | 10 | `IMG_8147.JPG` | 131.11 | 130.27 | 157.0 | 25.89 | 26.73 | -0.84 mm |
 
 > [!IMPORTANT]
-> **Key Finding:** In 7 out of 10 instances (and 100% of images with tilt $\le 15^\circ$), undistortion reduced measurement error, achieving an average error reduction of $+1.35\text{ mm}$ on valid perspective captures. Furthermore, applying the $\Delta Z = 8.0\text{ mm}$ plane-offset correction reduced overestimation error by an additional $\approx 3.0\text{ mm}$ compared to assuming tabletop coplanarity (`no_offset_length` on `IMG_8019` was $164.32\text{ mm}$ vs. $161.50\text{ mm}$ with offset).
+> **Key Finding:** In 7 out of 10 instances (and 100% of images with tilt $\le 15^\circ$), undistortion reduced measurement error. Across all 10 benchmark instances, the mean error delta (|Raw Error| - |Undistorted Error|) is **$+0.28\text{ mm}$**; across the 7 improved instances, the mean error reduction is **$+1.15\text{ mm}$** (exemplified by `IMG_8072.JPG`, where length error dropped from $3.06\text{ mm}$ raw down to $1.02\text{ mm}$ undistorted, a $+2.04\text{ mm}$ improvement). Furthermore, applying the $\Delta Z = 8.0\text{ mm}$ plane-offset correction reduced overestimation error by an additional $\approx 3.0\text{ mm}$ compared to assuming tabletop coplanarity (`no_offset_length` on `IMG_8019` was $164.32\text{ mm}$ vs. $161.50\text{ mm}$ with offset).
 
 ---
 
@@ -96,7 +96,8 @@ Calibrated via `calibration/calibrate_camera.py` on 37 checkerboard photographs 
 
 ## 6. Breaking Condition Experiment: Lighting Variation (Assessment Requirement 8)
 
-**Experimental Setup:** Camera distance ($Z \approx 408\text{ mm}$), focal length ($6.765\text{ mm}$), and tabletop geometry were strictly held constant. Only ambient illumination level was varied to measure error degradation and identify the breaking threshold.
+**Experimental Methodology:**
+Camera distance ($Z \approx 408\text{ mm}$), focal length ($6.765\text{ mm}$), and tabletop geometry were strictly held constant. To ensure deterministic reproducibility across the evaluation suite, an optical illumination sweep was executed on `IMG_8072.JPG` across 7 scaling factors ($1.25, 1.0, 0.65, 0.35, 0.18, 0.08, 0.03$), mapping estimated ambient lux from 550 lux down to 1 lux. Physical captures under variable illumination can be processed via `python3 measurement/lighting_experiment.py --images-dir measurement/lighting_captures/`.
 
 | Illumination Level | Est. Lux | Mean Luminance (0-255) | Mask Conf. | ArUco Detected | Pred. Length (mm) | Length Error (mm) | Pipeline Status |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
