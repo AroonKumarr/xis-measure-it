@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-05T06:57:49",
+  "timestamp": "2026-11-05T12:15:07",
   "total_tested": 15,
   "total_success": 10,
   "nominal_target": {
@@ -19,9 +19,9 @@
     "width": 10.83
   },
   "latency_ms": {
-    "median": 602.0,
-    "mean": 613.8,
-    "std": 20.1
+    "median": 593.6,
+    "mean": 603.9,
+    "std": 13.9
   },
   "comparisons": [
     {
