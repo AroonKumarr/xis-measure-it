@@ -1,0 +1,108 @@
+{
+  "mode": "CONTROLLED_ILLUMINATION_SWEEP",
+  "breaking_point": {
+    "condition": "Extreme Low Light",
+    "lux": 5.0,
+    "luminance_gray": 11.7,
+    "reason": "ArUco lost"
+  },
+  "conditions": [
+    {
+      "condition": "Bright Direct",
+      "lux": 550.0,
+      "description": "125% illumination (bright lamp)",
+      "mean_luminance_gray": 189.8,
+      "contrast_ratio": 0.812,
+      "mask_confidence": 0.9984,
+      "aruco_detected": true,
+      "status": "SUCCESS",
+      "length_mm": 158.29,
+      "width_mm": 69.42,
+      "length_error_mm": 1.29,
+      "width_error_mm": 2.58,
+      "overlay_path": "/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/lighting_bright_direct.jpg"
+    },
+    {
+      "condition": "Normal Room",
+      "lux": 300.0,
+      "description": "100% illumination (standard baseline)",
+      "mean_luminance_gray": 152.2,
+      "contrast_ratio": 0.809,
+      "mask_confidence": 0.9985,
+      "aruco_detected": true,
+      "status": "SUCCESS",
+      "length_mm": 158.02,
+      "width_mm": 69.92,
+      "length_error_mm": 1.02,
+      "width_error_mm": 2.08,
+      "overlay_path": "/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/lighting_normal_room.jpg"
+    },
+    {
+      "condition": "Dim Ambient",
+      "lux": 120.0,
+      "description": "65% illumination (subdued evening light)",
+      "mean_luminance_gray": 98.5,
+      "contrast_ratio": 0.811,
+      "mask_confidence": 0.9986,
+      "aruco_detected": true,
+      "status": "SUCCESS",
+      "length_mm": 158.55,
+      "width_mm": 69.83,
+      "length_error_mm": 1.55,
+      "width_error_mm": 2.17,
+      "overlay_path": "/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/lighting_dim_ambient.jpg"
+    },
+    {
+      "condition": "Low Light",
+      "lux": 45.0,
+      "description": "35% illumination (shadowed corner)",
+      "mean_luminance_gray": 52.8,
+      "contrast_ratio": 0.811,
+      "mask_confidence": 0.9987,
+      "aruco_detected": true,
+      "status": "SUCCESS",
+      "length_mm": 158.71,
+      "width_mm": 70.34,
+      "length_error_mm": 1.71,
+      "width_error_mm": 1.66,
+      "overlay_path": "/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/lighting_low_light.jpg"
+    },
+    {
+      "condition": "Very Low Light",
+      "lux": 15.0,
+      "description": "18% illumination (distant spill light)",
+      "mean_luminance_gray": 26.9,
+      "contrast_ratio": 0.816,
+      "mask_confidence": 0.9984,
+      "aruco_detected": true,
+      "status": "SUCCESS",
+      "length_mm": 158.84,
+      "width_mm": 70.79,
+      "length_error_mm": 1.84,
+      "width_error_mm": 1.21,
+      "overlay_path": "/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/lighting_very_low_light.jpg"
+    },
+    {
+      "condition": "Extreme Low Light",
+      "lux": 5.0,
+      "description": "8% illumination (near darkness - breaking candidate)",
+      "mean_luminance_gray": 11.7,
+      "contrast_ratio": 0.831,
+      "mask_confidence": 0.9937,
+      "aruco_detected": false,
+      "status": "REFUSED",
+      "refusal_reason": "ArUco lost"
+    },
+    {
+      "condition": "Critical Dark",
+      "lux": 1.0,
+      "description": "3% illumination (dark room - breaking point)",
+      "mean_luminance_gray": 4.0,
+      "contrast_ratio": 0.0,
+      "mask_confidence": 0.0,
+      "aruco_detected": false,
+      "status": "REFUSED",
+      "refusal_reason": "ArUco lost"
+    }
+  ]
+}

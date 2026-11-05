@@ -1,0 +1,11 @@
+trial,filename,status,calliper_length_mm,calliper_width_mm,raw_pred_length_mm,raw_pred_width_mm,undist_pred_length_mm,undist_pred_width_mm,raw_length_error_mm,undist_length_error_mm,raw_width_error_mm,undist_width_error_mm,undist_length_error_pct,undist_width_error_pct,improvement_delta_mm,camera_distance_z_mm,tilt_deg,comparison_overlay
+1,IMG_7993.JPG,SUCCESS,157.0,72.0,176.23,89.54,176.11,87.69,19.23,19.11,17.54,15.69,12.17,21.79,0.12,415.0,22.07,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_7993.jpg
+2,IMG_7994.JPG,SUCCESS,157.0,72.0,162.64,73.75,163.44,72.43,5.64,6.44,1.75,0.43,4.1,0.6,-0.8,405.4,11.78,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_7994.jpg
+3,IMG_7995.JPG,REFUSED,,,,,,,,,,,,,,,,
+4,IMG_7996.JPG,REFUSED,,,,,,,,,,,,,,,,
+5,IMG_7998.JPG,SUCCESS,157.0,72.0,166.22,80.09,166.97,79.68,9.22,9.97,8.09,7.68,6.35,10.67,-0.75,361.9,10.29,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_7998.jpg
+6,IMG_7999.JPG,SUCCESS,157.0,72.0,137.04,83.12,137.24,82.3,19.96,19.76,11.12,10.3,12.59,14.31,0.2,337.7,25.23,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_7999.jpg
+7,IMG_8001.JPG,REFUSED,,,,,,,,,,,,,,,,
+8,IMG_8003.JPG,SUCCESS,157.0,72.0,170.01,78.68,164.91,77.75,13.01,7.91,6.68,5.75,5.04,7.99,5.1,350.7,11.16,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_8003.jpg
+9,IMG_8004.JPG,SUCCESS,157.0,72.0,176.22,87.36,175.97,85.84,19.22,18.97,15.36,13.84,12.08,19.22,0.25,348.4,16.05,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/fresh_comparisons/compare_IMG_8004.jpg
+10,IMG_8006.JPG,REFUSED,,,,,,,,,,,,,,,,

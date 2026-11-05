@@ -1,0 +1,8 @@
+filename,lighting_level,lux_reading,illuminance_description,calliper_length_mm,calliper_width_mm,notes
+# TEMPLATE: Fill in your actual physical lighting condition measurements.
+# Keep phone position, camera distance Z, and angle fixed on a tripod/stand; vary only room lighting.
+light_01_bright.jpg,Bright,550,Direct overhead desk lamp + ambient room light,157.0,72.0,Optimal lighting baseline
+light_02_normal.jpg,Normal,280,Standard indoor room light (no direct lamp),157.0,72.0,Typical indoor conditions
+light_03_dim.jpg,Dim,95,Single distant lamp in evening,157.0,72.0,Subdued ambient lighting
+light_04_low.jpg,Low Light,30,Distant ambient spill / twilight,157.0,72.0,Shadowed / low illumination
+light_05_extreme_low.jpg,Extreme Low Light,8,Near darkness / single nightlight,157.0,72.0,Breaking condition candidate

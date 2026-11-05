@@ -35,6 +35,51 @@ import torch
 from models.model import create_maskrcnn_model
 
 
+def load_fresh_image(image_path: Path):
+    """
+    Loads an image from disk.
+    - Automatically handles HEIC/HEIF files via macOS /usr/bin/sips.
+    - Corrects landscape captures by rotating 90 deg clockwise to upright portrait.
+    Returns: (raw_bgr, was_rotated, is_heic)
+    """
+    if not image_path.exists():
+        raise FileNotFoundError(f"Image not found: {image_path}")
+
+    is_heic = image_path.suffix.lower() in [".heic", ".heif"]
+    if is_heic:
+        import subprocess
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix=".jpg", delete=False) as tmp:
+            tmp_jpg = Path(tmp.name)
+        try:
+            res = subprocess.run(
+                ["/usr/bin/sips", "-s", "format", "jpeg", str(image_path), "--out", str(tmp_jpg)],
+                capture_output=True,
+                text=True,
+            )
+            if res.returncode != 0:
+                raise RuntimeError(f"HEIC conversion failed: {res.stderr}")
+            img_bgr = cv2.imread(str(tmp_jpg), cv2.IMREAD_COLOR)
+        finally:
+            if tmp_jpg.exists():
+                tmp_jpg.unlink()
+    else:
+        img_bgr = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+
+    if img_bgr is None:
+        raise ValueError(f"Failed to load image: {image_path}")
+
+    h, w = img_bgr.shape[:2]
+    # Rotate landscape capture to upright portrait if needed
+    if w > h:
+        img_bgr = cv2.rotate(img_bgr, cv2.ROTATE_90_CLOCKWISE)
+        was_rotated = True
+    else:
+        was_rotated = False
+
+    return img_bgr, was_rotated, is_heic
+
+
 def load_calibration(params_path: Path):
     """
     Loads K, D, image size, and computes optimal new camera matrix.
@@ -354,20 +399,39 @@ def main():
         print(f"ERROR loading calibration: {e}", file=sys.stderr)
         return 1
 
-    # 2. Read Image
-    raw_bgr = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
-    if raw_bgr is None:
-        print(f"ERROR: Failed to read image: {image_path}", file=sys.stderr)
+    # 2. Read Fresh or Existing Photograph
+    try:
+        raw_bgr, was_rotated, is_heic = load_fresh_image(image_path)
+    except Exception as e:
+        print(f"ERROR: Failed to read image {image_path}: {e}", file=sys.stderr)
         return 1
 
     h, w = raw_bgr.shape[:2]
+    if was_rotated:
+        print(f"INFO: Detected landscape capture; auto-rotated 90° clockwise to match portrait calibration frame ({w}x{h}).")
+    if is_heic:
+        print(f"INFO: Converted Apple HEIC format to decoded RGB on macOS.")
 
-    # Check if image is already undistorted (e.g. from milestone folder) or needs undistortion
+    # Match calibration resolution or adapt scaling if 12MP binned image was supplied
     if (w, h) == (calib_w, calib_h):
-        # Apply standard undistortion
+        active_K = K
+        active_new_K = new_K
         undist_bgr = cv2.undistort(raw_bgr, K, D, None, new_K)
+    elif abs(w / h - calib_w / calib_h) < 0.05 and w < calib_w:
+        scale_x = w / calib_w
+        scale_y = h / calib_h
+        scaled_K = K.copy()
+        scaled_K[0, 0] *= scale_x
+        scaled_K[0, 2] *= scale_x
+        scaled_K[1, 1] *= scale_y
+        scaled_K[1, 2] *= scale_y
+        active_new_K, _ = cv2.getOptimalNewCameraMatrix(scaled_K, D, (w, h), alpha=1.0)
+        active_K = scaled_K
+        undist_bgr = cv2.undistort(raw_bgr, scaled_K, D, None, active_new_K)
+        print(f"INFO: Resolution {w}x{h} detected. Adapted camera intrinsics from native 24MP calibration.")
     else:
-        print(f"WARNING: Image size ({w}x{h}) differs from calibrated ({calib_w}x{calib_h})", file=sys.stderr)
+        active_K = K
+        active_new_K = new_K
         undist_bgr = raw_bgr
 
     undist_rgb = cv2.cvtColor(undist_bgr, cv2.COLOR_BGR2RGB)
@@ -413,7 +477,7 @@ def main():
     metrics, err = estimate_dimensions(
         mask=mask,
         marker_corners=marker_corners,
-        camera_matrix=new_K,
+        camera_matrix=active_new_K,
         marker_size_mm=args.marker_size_mm,
         phone_elevation_mm=args.phone_elevation_mm,
     )
@@ -460,19 +524,23 @@ def main():
         json.dump(report, f, indent=2)
 
     print("\n" + "=" * 70)
-    print("XIS Measure It — Measurement Successful")
+    print("         XIS MEASURE IT — REAL-WORLD PHYSICAL MEASUREMENT")
     print("=" * 70)
-    print(f"Image File          : {image_path.name}")
-    print(f"Phone Length (mm)   : {metrics['length_mm']:.1f} mm")
-    print(f"Phone Width (mm)    : {metrics['width_mm']:.1f} mm")
-    print(f"Phone Aspect Ratio  : {metrics['aspect_ratio']:.2f}")
-    print(f"Table Distance Z    : {metrics['distance_table_z_mm']:.1f} mm")
-    print(f"Phone Distance Z    : {metrics['distance_phone_z_mm']:.1f} mm (Offset = {metrics['plane_offset_applied_mm']:.1f} mm)")
-    print(f"Plane Correction    : {metrics['plane_scale_correction_ratio']:.4f}")
-    print(f"Marker Tilt Angle   : {metrics['marker_tilt_deg']:.1f} deg")
-    print(f"Detection Confidence: {conf_score*100:.1f}%")
-    print(f"Saved Overlay Image : {vis_path}")
-    print(f"Saved Output JSON   : {rep_path}")
+    print(f"  Input Photograph   : {image_path.name} ({w}x{h})")
+    print(f"  Pipeline Status    : SUCCESS")
+    print("-" * 70)
+    print(f"  PHONE LENGTH       : {metrics['length_mm']:>6.1f} mm   (Target: ~157.0 mm)")
+    print(f"  PHONE WIDTH        : {metrics['width_mm']:>6.1f} mm   (Target:  ~72.0 mm)")
+    print(f"  ASPECT RATIO       : {metrics['aspect_ratio']:>6.2f}")
+    print("-" * 70)
+    print(f"  Reference Marker   : ArUco DICT_4X4_50 ID {marker_id}")
+    print(f"  Camera Distance Z  : {metrics['distance_table_z_mm']:.1f} mm")
+    print(f"  Plane Offset dZ    : {metrics['plane_offset_applied_mm']:.1f} mm (Z_phone = {metrics['distance_phone_z_mm']:.1f} mm)")
+    print(f"  Perspective Tilt   : {metrics['marker_tilt_deg']:.1f}° (Safe threshold < 35.0°)")
+    print(f"  Mask Confidence    : {conf_score*100:.1f}%")
+    print("-" * 70)
+    print(f"  Annotated Overlay  : {vis_path}")
+    print(f"  Measurement Report : {rep_path}")
     print("=" * 70)
     return 0
 

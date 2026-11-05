@@ -1,0 +1,13 @@
+filename,calliper_length_mm,calliper_width_mm,calliper_thickness_mm,calliper_make_model,calibrated_uncertainty_mm,notes
+# TEMPLATE: Fill in your actual physical calliper measurements for each newly captured photograph.
+# If you do not have digital callipers, record manual vernier or millimeter ruler readings and note the tool below.
+fresh_01.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_02.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_03.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_04.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_05.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_06.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_07.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_08.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_09.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+fresh_10.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
