@@ -137,3 +137,34 @@ Verified via automated test suite `tests/test_refusals.py` and real dataset exec
 | **Distorted Reference** | Marker aspect ratio $> 1.25$ (`IMG_8035`, `IMG_8001`) | `status: "REFUSED"`, `reason: "ArUco marker perspective distortion too severe ..."` | **Code 4** | `measurement/run_benchmark.py` |
 | **Severe Tilt** | Camera tilt $> 35^\circ$ | `status: "REFUSED"`, `reason: "Marker tilt angle exceeds maximum reliable threshold"` | **Code 4** | `inference/measure_image.py` |
 | **Extreme Low Light** | Scene luminance $< 12/255$ (~5 lux) | `status: "REFUSED"`, `reason: "ArUco reference marker not detected"` | **Code 3** | `measurement/lighting_experiment.py` |
+
+---
+
+## 9. Fresh-Photo Physical Capture Results (Archive 8 Cohort)
+
+Fourteen genuine, newly captured photographs (`IMG_8164.JPG` to `IMG_8177.JPG`, resolution $4284 \times 5712$) from an iPhone 15 Pro were processed end-to-end through `measurement/measure.py`.
+
+### 9.1 Processing Summary & Safety Refusal Gate Performance
+
+| Filename | Resolution | Tilt (deg) | Distance $Z$ (mm) | Undist. Length (mm) | Undist. Width (mm) | Raw Length (mm) | Pipeline Outcome |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `IMG_8164.JPG` | $4284 \times 5712$ | 8.9° | 492.0 | **156.07** | 76.98 | 157.13 | **SUCCESS** (Best Candidate) |
+| `IMG_8165.JPG` | $4284 \times 5712$ | 18.5° | 509.3 | 146.86 | 81.01 | 148.18 | **SUCCESS** |
+| `IMG_8166.JPG` | $4284 \times 5712$ | 25.9° | 525.2 | 138.84 | 82.77 | 140.51 | **SUCCESS** |
+| `IMG_8167.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 1.26 > 1.25) |
+| `IMG_8168.JPG` | $4284 \times 5712$ | 18.5° | 485.9 | 142.81 | 69.45 | 141.87 | **SUCCESS** |
+| `IMG_8169.JPG` | $4284 \times 5712$ | 36.2° | -- | -- | -- | -- | **REFUSED** (Tilt 36.2° > 35.0°) |
+| `IMG_8170.JPG` | $4284 \times 5712$ | 10.1° | 482.4 | 191.92 | 91.22 | 191.49 | **SUCCESS** |
+| `IMG_8171.JPG` | $4284 \times 5712$ | 22.1° | 514.5 | 223.18 | 101.04 | 222.47 | **SUCCESS** |
+| `IMG_8172.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 0.67 < 0.75) |
+| `IMG_8173.JPG` | $4284 \times 5712$ | 5.9° | 464.6 | 175.25 | 82.19 | 176.82 | **SUCCESS** |
+| `IMG_8174.JPG` | $4284 \times 5712$ | 18.7° | 474.5 | 180.73 | 82.07 | 180.38 | **SUCCESS** |
+| `IMG_8175.JPG` | $4284 \times 5712$ | 26.2° | 469.0 | 185.30 | 80.04 | 188.21 | **SUCCESS** |
+| `IMG_8176.JPG` | $4284 \times 5712$ | 12.3° | 555.6 | 176.25 | 88.42 | 172.27 | **SUCCESS** |
+| `IMG_8177.JPG` | $4284 \times 5712$ | 21.1° | 541.3 | 171.22 | 87.15 | 171.56 | **SUCCESS** |
+
+- **Execution Reliability:** 11/14 completed successfully (78.6%), 3/14 safely refused (21.4%). Zero unhandled exceptions or crashes.
+- **Physical Calliper Status:** Physical ground truth readings are pending candidate input in `measurement/calliper_measurements.csv` (see `USER_ACTIONS_REQUIRED.md`).
+- **Best Fresh Estimate:** `IMG_8164.JPG` yielded length $156.07\text{ mm}$ and width $76.98\text{ mm}$ under low tilt ($8.9^\circ$), which aligns closely with expected smartphone-plus-case dimensions.
+- **Full Root Cause Analysis:** Detailed optical analysis of perspective variance, protective case offset, and camera distance is catalogued in `measurement/MEASUREMENT_ROOT_CAUSE_ANALYSIS.md`.
+

@@ -72,6 +72,11 @@ python3 measurement/measure.py --image path/to/fresh_photo.jpg
 ```
 *(Also supports `.heic` directly: `python3 measurement/measure.py --image fresh_photo.heic`)*
 
+**Ready-to-run sample on included fresh capture:**
+```bash
+python3 measurement/measure.py --image measurement/fresh_captures/IMG_8164.JPG
+```
+
 ### Terminal Output Example:
 ```text
 ======================================================================
@@ -221,4 +226,4 @@ python3 measurement/tilt_analysis.py
 In strict compliance with Assessment Version 2.0:
 - [`docs/Plan.md`](docs/Plan.md): Engineering timeline, 5 Architectural Decision Records (DR-01 to DR-05), scope fallbacks, and optical limitations.
 - [`docs/Objectives.md`](docs/Objectives.md): Measured quantitative benchmarks (MO-1 accuracy table, MO-2 latency, empirical undistortion comparison, lighting breaking experiment, and tilt degradation curve).
-- [`docs/Definition_of_Done.md`](docs/Definition_of_Done.md): 20-item acceptance checklist signed off against verified execution artifacts.
+- [`docs/Definition_of_Done.md`](docs/Definition_of_Done.md): 21-item acceptance checklist with honest PARTIAL / COMPLETE classifications signed off against verified execution artifacts.
