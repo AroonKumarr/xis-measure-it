@@ -1,19 +1,12 @@
-# Exact Pinned Dependencies (macOS Apple Silicon M4)
-# Python 3.11.9 Environment
-#
-# OpenCV Note: Three OpenCV wheels are present in this environment
-#   (opencv-contrib-python, opencv-python, opencv-python-headless),
-#   all at version 4.10.0.84, sharing a single cv2 module on disk.
-#   For project use, pin to opencv-contrib-python (required for ArUco).
-#   Only opencv-contrib-python should be explicitly installed in a
-#   clean project environment; do not install the other two alongside it.
-
-numpy==1.26.4
-opencv-contrib-python==4.10.0.84
-torch==2.14.1
-torchvision==0.29.1
-Pillow==12.2.0
-scipy==1.17.1
-pandas==2.0.3
-matplotlib==3.10.9
-tabulate==0.10.0
+# Dependencies for XIS Measure It & Streamlit Cloud Deployment
+numpy>=1.24.0
+opencv-contrib-python>=4.8.0.76
+torch>=2.0.0
+torchvision>=0.15.0
+Pillow>=9.5.0
+scipy>=1.10.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+tabulate>=0.9.0
+streamlit>=1.30.0
+starlette>=0.45.0
