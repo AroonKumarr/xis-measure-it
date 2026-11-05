@@ -71,3 +71,10 @@ measurement/reports/measure_overlay_*.jpg
 # Canonical-name copies of fresh captures (originals tracked under IMG_8*.JPG)
 measurement/fresh_captures/fresh_*.jpg
 measurement/reports/fresh_comparisons/compare_fresh_*.jpg
+
+# Large video/audio recordings (local files)
+recording/*.mov
+recording/*.mp4
+recording/*.MOV
+recording/*.MP4
+recording/*.mp3

@@ -1,0 +1,63 @@
+start	end	text
+0	8200	Hello, my name is Arun Kumar, today I am presenting my exe-i-mirror i3 project, the objective
+8200	13640	of this project to my real world pertain length of physical object using computer vision.
+13640	19760	For this project, I selected a smartphone and used my iPhone 15 Pro as the camera.
+19760	26120	I first calibrated the camera using open-cv, then collected my own images, created segmentation,
+26120	34040	annotation, entraned, a masked RNN, CRNN, RCNN model.
+34040	39400	Now I will demonstrate edge-in-measurement workflow using a new photograph.
+39400	44360	The system has now processed the photograph, it applies camera, undistortion, detective
+44360	50720	phone using segmentation model, identified the ARUCU reference marker and calculated
+50720	53240	the physical dimensions.
+53240	60680	The predicted length is in millimeters and the predicted edge-in-measurents are in millimeters.
+60680	67280	My physical reference measurements are 157 millimeters in length, 72 millimeters in width.
+67280	73080	This allows me to compare the computer vision result with the edge-in-measurent I mentioned.
+73080	76800	There are four main stages in my measurement pipeline.
+76800	79960	First is the camera calibration and undistortion.
+79960	86320	I used open-cv to estimate the camera metrics and distortion coefficient from 37-colibration
+86320	87800	photograph.
+87800	92800	These parameters are loaded by my measurements pipeline to correct length-distortion
+92800	95000	before measurement.
+95000	96640	Second is object segmentation.
+96640	101640	I used TorxVian, masked RCNN with less net 50 backbone.
+101640	106960	I trained the segmentation model using my own manually automated annotate smartphone
+106960	107960	images.
+107960	112800	This is identified the phone boundary and procedures as segment mass.
+112800	114600	Third is reference detection.
+114600	123520	I used an ARUCU marker with the dict 450 direct directory and marker ID 0.
+123520	127560	It is physically myriad dimension, provide the reference for metric measurement.
+127560	132200	Finally, the system calculates the object dimensions in millimeter using detected objects
+132200	134720	hungry and the reference geometry.
+134720	138800	The system also checks confidence and measurements conditions.
+138800	143440	When the phone or reference cannot be detect reliably, it refutes to provide measurement.
+143440	145960	K1 pixel to measurement convergent.
+145960	150520	The pixel to measurement convergent is implemented in the measurement interface code.
+150520	156640	The system code are well-non-physical dimension of ARUCU reference, multipersed, estimated
+156640	160360	scale between image coordinates and real-world measurements.
+160360	165120	Now this conversation to be valid, the camera must be calibrated, the reference dimension
+165120	171560	must be correct, and the reference a myriad object must be geometrically valid relationship.
+171560	175920	In particular, the plane height and a perspective assumption must be accounted for.
+175920	178600	K2 camera undistortioned.
+178600	183000	Undistortioned is applied before segmentation and measurement using the camera calibration
+183000	184000	parameters.
+184000	188600	I compared the same photograph using both the raw and undistortioned images.
+188600	196240	The average error of images while the average error and distortion image was in millimeters.
+196240	201600	My experiment shows that undistortioned the measurement accurately by millimeters.
+201600	205840	This is why camera calibration is important part in the physical measurement system.
+205840	208400	K3, one decision I will reverse.
+208400	213080	One decision I will reconsider the order in which the annotate my dataset.
+213080	216280	Initially, I labeled the original data as a photograph and then had the transfer
+216280	219880	and notation coordinate to measure the undistortioned images.
+219880	224240	If I was starting again, I would undistort the image before the annotation.
+224240	228600	The word simply the pipeline avoid additional coordinate transform, however changing the
+228600	233520	existing dataset would require repeatedly the annotation, work and verify the transform
+233520	234520	labels.
+234520	236720	K4, one thing I did not understand.
+236720	241320	One thing I initially did not fully understand was how the physical height difference between
+241320	244720	the phone and the reference market effect measurement accuracy.
+244720	248920	I initially treated this as an reference scale to simply.
+248920	253360	After investigating the camera's geometry, I understood that the reference market and
+253360	257840	the object and the reference reference from the camera can introduce scale errors.
+257840	263120	I investigated the plain height, correction and documentation assumption and limitation.
+263120	267480	This taught me to a good segmentation model along is not enough accurate physical measurement
+267480	273560	are also required correct calibration, reference geometry and experimented verification.
+273560	277160	Thanks for watching my exam years IT demonstration.
