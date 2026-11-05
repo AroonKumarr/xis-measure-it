@@ -1,19 +1,36 @@
 filename,calliper_length_mm,calliper_width_mm,calliper_thickness_mm,calliper_make_model,calibrated_uncertainty_mm,notes
 # ==================================================================================================
 # PHYSICAL CALLIPER MEASUREMENT RECORD (Assessment Requirement 5)
-# Fill in your actual physical vernier/digital calliper or mm ruler readings for each capture below.
-# Leave as PENDING_MEASUREMENT until you take your physical tool measurements.
 #
-# EXAMPLE FORMAT (replace with your tool and measured values):
-# example_capture.jpg,157.2,71.8,8.1,Mitutoyo Digital Caliper 500-196-30,0.02,Measured at 21C
+# INSTRUCTIONS:
+# 1. Use a digital/vernier calliper or precision mm ruler.
+# 2. Measure the actual physical object being photographed (phone body or phone+case).
+# 3. For each image, measure the SAME physical dimension that the segmentation mask is capturing.
+#    If the phone is in a case in the photos, measure the phone+case exterior dimensions.
+# 4. Replace PENDING_MEASUREMENT with your actual numeric readings.
+# 5. Record your calliper tool model and estimated uncertainty.
+# 6. Take 3 readings per image and use the average.
+#
+# IMPORTANT: These 11 images all show the SAME physical phone photographed from different angles.
+# Therefore calliper_length_mm and calliper_width_mm should be the SAME value across all rows
+# (unless you have removed/added the case between shots — record that in notes).
+#
+# ArUco marker side length: also measure the actual printed black square outer side.
+# Record it here: ARUCO_MARKER_SIDE_MM = PENDING_MEASUREMENT
+# (The marker print says "100mm nominal — measure with calliper to confirm actual size")
+#
+# Phone plane-height (ΔZ): measure the height of the phone back above the tabletop
+# with the phone resting screen-down on the table.
+# Record it here: DELTA_Z_MM = PENDING_MEASUREMENT
 # ==================================================================================================
-fresh_01.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 1
-fresh_02.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 2
-fresh_03.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 3
-fresh_04.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 4
-fresh_05.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 5
-fresh_06.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 6
-fresh_07.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 7
-fresh_08.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 8
-fresh_09.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 9
-fresh_10.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 10
+IMG_8164.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Low-tilt capture (8.9 deg) - good measurement candidate
+IMG_8165.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Medium-tilt capture (18.5 deg)
+IMG_8166.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,High-tilt capture (25.9 deg)
+IMG_8168.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Medium-tilt capture (18.5 deg)
+IMG_8170.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Medium-tilt capture (10.1 deg)
+IMG_8171.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,High-tilt capture (22.1 deg)
+IMG_8173.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Low-tilt capture (5.9 deg) - best measurement candidate
+IMG_8174.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Medium-tilt capture (18.7 deg)
+IMG_8175.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,High-tilt capture (26.2 deg)
+IMG_8176.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Medium-tilt capture (12.3 deg)
+IMG_8177.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,High-tilt capture (21.1 deg)

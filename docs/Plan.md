@@ -56,3 +56,32 @@
 - **Scientific Integrity Principle:** In strict compliance with assessment guidelines, zero synthetic pseudo-labels or fabricated masks were generated. The absence of ground-truth segmentation masks for validation and test splits is explicitly disclosed.
 - **Model Training Validation:** Internal model validation during training was conducted on a held-out session subset within the 77 annotated images (Session B, 16 images), achieving a Best Validation Mask IoU of `0.9521` and 100% detection rate.
 - **End-to-End Evaluation on Unlabelled Splits:** Evaluation on held-out validation and test splits is conducted via end-to-end physical metric dimension recovery against the known physical smartphone geometry, testing the complete real-world perception pipeline under novel viewpoints.
+
+---
+
+### 6. Archive 8 Fresh-Photo Processing Findings
+
+**14 genuine iPhone 15 Pro photographs** were captured post-implementation and processed through the measurement pipeline, providing the first real fresh-photo evidence.
+
+**Processing outcome:** 11 SUCCESS, 3 correctly REFUSED (geometry failures).
+
+**Key findings from Archive 8:**
+
+1. **System behaviour on genuine fresh photos is correct.** The pipeline automatically undistorts, segments, detects ArUco, and computes dimensions without human intervention. Zero crashes across 14 images.
+
+2. **Refusal system correctly rejected 3 images:**
+   - IMG_8167: ArUco distortion ratio 1.26 (threshold 1.25) — marker viewed at steep angle
+   - IMG_8169: Tilt 36.2° (threshold 35°) — phone tilted too far from camera axis
+   - IMG_8172: ArUco distortion ratio 0.67 — marker perspective collapse
+
+3. **Best result:** IMG_8164 (tilt=8.9°) → **156.1 mm** length, **77.0 mm** width — consistent with phone+case expected dimensions of ~157 mm.
+
+4. **Measurement scatter root causes identified** (see `measurement/MEASUREMENT_ROOT_CAUSE_ANALYSIS.md`):
+   - Phone is in a protective case — segmented object is phone+case exterior (adds 1–3 mm per side vs. bare body)
+   - Camera-to-phone distance varies across shots; images taken at different heights inflate/deflate the scale
+   - ArUco marker actual size is unverified (nominal 100 mm); measured discrepancy would propagate as ~1–2% error
+   - ΔZ = 8.0 mm is a nominal guess for a bare phone body — with case, actual ΔZ is likely 10–14 mm
+
+5. **Raw vs. undistorted results** computed for all 11 successful images; stored in `measurement/reports/archive8_raw_vs_undistorted.json`. Undistortion effect on Archive 8 images is small (<4 mm) because phone appears near frame centre where radial distortion is minimal.
+
+6. **Calliper validation is pending.** The 11 rows in `measurement/calliper_measurements.csv` are marked `PENDING_MEASUREMENT`. See `USER_ACTIONS_REQUIRED.md` for instructions.

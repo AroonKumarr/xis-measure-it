@@ -67,3 +67,6 @@ logs/
 measurement/reports/test_scratch/
 measurement/reports/measure_*.json
 measurement/reports/measure_overlay_*.jpg
+
+# Canonical-name copies of fresh captures (originals tracked under IMG_8*.JPG)
+measurement/fresh_captures/fresh_*.jpg
