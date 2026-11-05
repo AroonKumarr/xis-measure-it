@@ -1,0 +1,165 @@
+{
+  "project": "XIS Measure It \u2014 Assessment Version 2.0",
+  "script": "calibration/calibrate_camera.py",
+  "opencv_version": "4.10.0",
+  "loading_policy": "cv2.imread(path, cv2.IMREAD_COLOR) \u2014 EXIF auto-rotate applied",
+  "calibration_settings": {
+    "pattern_cols": 9,
+    "pattern_rows": 7,
+    "n_internal_corners": 63,
+    "square_size_mm": 20.0,
+    "square_pitch_note": "Nominal 20.0x20.0 mm derived from full-grid ruler measurements (200mm x 160mm span, +/-1mm ruler uncertainty). Individual square calliper verification PENDING.",
+    "calib_flags": 0,
+    "calib_flags_description": "0 \u2014 standard pinhole, free optimisation of all parameters",
+    "corner_detector": "cv2.findChessboardCornersSB",
+    "corner_detector_flags": "CALIB_CB_EXHAUSTIVE | CALIB_CB_ACCURACY"
+  },
+  "image_size": {
+    "width_px": 4284,
+    "height_px": 5712,
+    "note": "(W, H) in OpenCV convention; loaded shape is (H, W, 3)"
+  },
+  "dataset": {
+    "n_input_images": 37,
+    "n_successfully_calibrated": 37,
+    "n_rejected": 0,
+    "rejected_images": []
+  },
+  "results": {
+    "overall_opencv_rms_px": 1.6296540241033455,
+    "note_overall_opencv_rms": "Value returned directly by cv2.calibrateCamera \u2014 computed over all corners across all images jointly.",
+    "mean_per_view_euclidean_rms_px": 1.545791105644123,
+    "median_per_view_euclidean_rms_px": 1.3779857158660889,
+    "min_per_view_euclidean_rms_px": 0.7902707457542419,
+    "max_per_view_euclidean_rms_px": 2.8851373195648193,
+    "worst_image": "IMG_7985.JPG",
+    "best_image": "IMG_7992.JPG"
+  },
+  "historical_reference_comparison": {
+    "note": "Historical reference values from an early internal scratch run; provided solely for regression tracking, not universal calibration targets.",
+    "overall_opencv_rms_px": 1.629654,
+    "mean_per_view_euclidean_rms_px": 1.54579,
+    "median_per_view_euclidean_rms_px": 1.377991
+  },
+  "intrinsics": {
+    "fx": 4079.8705012820583,
+    "fy": 4080.0645275307957,
+    "cx": 2132.859379517563,
+    "cy": 2880.188672827303,
+    "K": [
+      [
+        4079.8705012820583,
+        0.0,
+        2132.859379517563
+      ],
+      [
+        0.0,
+        4080.0645275307957,
+        2880.188672827303
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "D": [
+      0.2094246133930041,
+      -0.7657324225314543,
+      0.0020394277187396775,
+      0.00033676441499072584,
+      0.8152289721694898
+    ],
+    "D_labels": [
+      "k1",
+      "k2",
+      "p1",
+      "p2",
+      "k3"
+    ]
+  },
+  "limitations": {
+    "square_pitch": "Individual checkerboard square pitch calliper verification is pending. 20.0 mm is nominal from ruler.",
+    "board_flatness": "Physical board flatness verification is pending.",
+    "focus_lock": "Focus lock cannot be independently established from EXIF metadata.",
+    "metric_interpretation": "Overall RMS 1.629654 px is a 2D image reprojection metric, not 3D physical millimetre measurement accuracy."
+  },
+  "source_filenames": [
+    "IMG_7955.JPG",
+    "IMG_7956.JPG",
+    "IMG_7957.JPG",
+    "IMG_7958.JPG",
+    "IMG_7959.JPG",
+    "IMG_7960.JPG",
+    "IMG_7961.JPG",
+    "IMG_7962.JPG",
+    "IMG_7963.JPG",
+    "IMG_7964.JPG",
+    "IMG_7965.JPG",
+    "IMG_7966.JPG",
+    "IMG_7967.JPG",
+    "IMG_7968.JPG",
+    "IMG_7969.JPG",
+    "IMG_7970.JPG",
+    "IMG_7971.JPG",
+    "IMG_7972.JPG",
+    "IMG_7973.JPG",
+    "IMG_7974.JPG",
+    "IMG_7975.JPG",
+    "IMG_7976.JPG",
+    "IMG_7977.JPG",
+    "IMG_7978.JPG",
+    "IMG_7979.JPG",
+    "IMG_7980.JPG",
+    "IMG_7981.JPG",
+    "IMG_7982.JPG",
+    "IMG_7983.JPG",
+    "IMG_7984.JPG",
+    "IMG_7985.JPG",
+    "IMG_7986.JPG",
+    "IMG_7987.JPG",
+    "IMG_7988.JPG",
+    "IMG_7989.JPG",
+    "IMG_7990.JPG",
+    "IMG_7992.JPG"
+  ],
+  "successfully_calibrated_filenames": [
+    "IMG_7955.JPG",
+    "IMG_7956.JPG",
+    "IMG_7957.JPG",
+    "IMG_7958.JPG",
+    "IMG_7959.JPG",
+    "IMG_7960.JPG",
+    "IMG_7961.JPG",
+    "IMG_7962.JPG",
+    "IMG_7963.JPG",
+    "IMG_7964.JPG",
+    "IMG_7965.JPG",
+    "IMG_7966.JPG",
+    "IMG_7967.JPG",
+    "IMG_7968.JPG",
+    "IMG_7969.JPG",
+    "IMG_7970.JPG",
+    "IMG_7971.JPG",
+    "IMG_7972.JPG",
+    "IMG_7973.JPG",
+    "IMG_7974.JPG",
+    "IMG_7975.JPG",
+    "IMG_7976.JPG",
+    "IMG_7977.JPG",
+    "IMG_7978.JPG",
+    "IMG_7979.JPG",
+    "IMG_7980.JPG",
+    "IMG_7981.JPG",
+    "IMG_7982.JPG",
+    "IMG_7983.JPG",
+    "IMG_7984.JPG",
+    "IMG_7985.JPG",
+    "IMG_7986.JPG",
+    "IMG_7987.JPG",
+    "IMG_7988.JPG",
+    "IMG_7989.JPG",
+    "IMG_7990.JPG",
+    "IMG_7992.JPG"
+  ]
+}

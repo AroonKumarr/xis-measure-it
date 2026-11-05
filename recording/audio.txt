@@ -1,0 +1,62 @@
+Hello, my name is Arun Kumar, today I am presenting my exe-i-mirror i3 project, the objective
+of this project to my real world pertain length of physical object using computer vision.
+For this project, I selected a smartphone and used my iPhone 15 Pro as the camera.
+I first calibrated the camera using open-cv, then collected my own images, created segmentation,
+annotation, entraned, a masked RNN, CRNN, RCNN model.
+Now I will demonstrate edge-in-measurement workflow using a new photograph.
+The system has now processed the photograph, it applies camera, undistortion, detective
+phone using segmentation model, identified the ARUCU reference marker and calculated
+the physical dimensions.
+The predicted length is in millimeters and the predicted edge-in-measurents are in millimeters.
+My physical reference measurements are 157 millimeters in length, 72 millimeters in width.
+This allows me to compare the computer vision result with the edge-in-measurent I mentioned.
+There are four main stages in my measurement pipeline.
+First is the camera calibration and undistortion.
+I used open-cv to estimate the camera metrics and distortion coefficient from 37-colibration
+photograph.
+These parameters are loaded by my measurements pipeline to correct length-distortion
+before measurement.
+Second is object segmentation.
+I used TorxVian, masked RCNN with less net 50 backbone.
+I trained the segmentation model using my own manually automated annotate smartphone
+images.
+This is identified the phone boundary and procedures as segment mass.
+Third is reference detection.
+I used an ARUCU marker with the dict 450 direct directory and marker ID 0.
+It is physically myriad dimension, provide the reference for metric measurement.
+Finally, the system calculates the object dimensions in millimeter using detected objects
+hungry and the reference geometry.
+The system also checks confidence and measurements conditions.
+When the phone or reference cannot be detect reliably, it refutes to provide measurement.
+K1 pixel to measurement convergent.
+The pixel to measurement convergent is implemented in the measurement interface code.
+The system code are well-non-physical dimension of ARUCU reference, multipersed, estimated
+scale between image coordinates and real-world measurements.
+Now this conversation to be valid, the camera must be calibrated, the reference dimension
+must be correct, and the reference a myriad object must be geometrically valid relationship.
+In particular, the plane height and a perspective assumption must be accounted for.
+K2 camera undistortioned.
+Undistortioned is applied before segmentation and measurement using the camera calibration
+parameters.
+I compared the same photograph using both the raw and undistortioned images.
+The average error of images while the average error and distortion image was in millimeters.
+My experiment shows that undistortioned the measurement accurately by millimeters.
+This is why camera calibration is important part in the physical measurement system.
+K3, one decision I will reverse.
+One decision I will reconsider the order in which the annotate my dataset.
+Initially, I labeled the original data as a photograph and then had the transfer
+and notation coordinate to measure the undistortioned images.
+If I was starting again, I would undistort the image before the annotation.
+The word simply the pipeline avoid additional coordinate transform, however changing the
+existing dataset would require repeatedly the annotation, work and verify the transform
+labels.
+K4, one thing I did not understand.
+One thing I initially did not fully understand was how the physical height difference between
+the phone and the reference market effect measurement accuracy.
+I initially treated this as an reference scale to simply.
+After investigating the camera's geometry, I understood that the reference market and
+the object and the reference reference from the camera can introduce scale errors.
+I investigated the plain height, correction and documentation assumption and limitation.
+This taught me to a good segmentation model along is not enough accurate physical measurement
+are also required correct calibration, reference geometry and experimented verification.
+Thanks for watching my exam years IT demonstration.

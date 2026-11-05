@@ -1,0 +1,115 @@
+{
+  "source_archive": "~/Downloads/Archive 8.zip",
+  "extraction_date": "2026-11-05",
+  "destination": "measurement/fresh_captures/",
+  "original_preserved": true,
+  "zip_unmodified": true,
+  "total_images": 14,
+  "images": [
+    {
+      "original_filename": "IMG_8164.JPG",
+      "canonical": "fresh_01.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 8.9,
+      "note": "Best accuracy candidate (low tilt)"
+    },
+    {
+      "original_filename": "IMG_8165.JPG",
+      "canonical": "fresh_02.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 18.5,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8166.JPG",
+      "canonical": "fresh_03.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 25.9,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8167.JPG",
+      "canonical": "fresh_04.jpg",
+      "pipeline_result": "REFUSED",
+      "tilt_deg": null,
+      "refusal_reason": "ArUco distortion 1.26 (threshold 1.25)"
+    },
+    {
+      "original_filename": "IMG_8168.JPG",
+      "canonical": "fresh_05.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 18.5,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8169.JPG",
+      "canonical": "fresh_06.jpg",
+      "pipeline_result": "REFUSED",
+      "tilt_deg": null,
+      "refusal_reason": "Tilt 36.2 deg (threshold 35.0 deg)"
+    },
+    {
+      "original_filename": "IMG_8170.JPG",
+      "canonical": "fresh_07.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 10.1,
+      "note": "Preliminary measurement run performed"
+    },
+    {
+      "original_filename": "IMG_8171.JPG",
+      "canonical": "fresh_08.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 22.1,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8172.JPG",
+      "canonical": "fresh_09.jpg",
+      "pipeline_result": "REFUSED",
+      "tilt_deg": null,
+      "refusal_reason": "ArUco distortion 0.67 (threshold 1.25)"
+    },
+    {
+      "original_filename": "IMG_8173.JPG",
+      "canonical": "fresh_10.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 5.9,
+      "note": "Lowest tilt in batch"
+    },
+    {
+      "original_filename": "IMG_8174.JPG",
+      "canonical": "fresh_11.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 18.7,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8175.JPG",
+      "canonical": "fresh_12.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 26.2,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8176.JPG",
+      "canonical": "fresh_13.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 12.3,
+      "note": ""
+    },
+    {
+      "original_filename": "IMG_8177.JPG",
+      "canonical": "fresh_14.jpg",
+      "pipeline_result": "SUCCESS",
+      "tilt_deg": 21.1,
+      "note": ""
+    }
+  ],
+  "calibration_compatibility": {
+    "expected_resolution": "4284x5712",
+    "all_match": true,
+    "orientation_note": "iOS embeds pre-rotated pixels; sips reports 5712x4284 raw sensor but cv2.imread correctly produces 4284x5712 portrait. No rotation needed."
+  },
+  "lighting_note": "All 14 images have similar indoor lighting (mean luminance 149-164/255). No statistically reliable bright/dim groups can be assigned from these images alone. Lighting experiment requires dedicated physical captures.",
+  "calliper_status": "PENDING \u2014 physical measurements not yet taken"
+}

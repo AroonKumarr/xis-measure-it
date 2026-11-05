@@ -1,0 +1,188 @@
+WEBVTT
+
+00:00.000 --> 00:08.200
+Hello, my name is Arun Kumar, today I am presenting my exe-i-mirror i3 project, the objective
+
+00:08.200 --> 00:13.640
+of this project to my real world pertain length of physical object using computer vision.
+
+00:13.640 --> 00:19.760
+For this project, I selected a smartphone and used my iPhone 15 Pro as the camera.
+
+00:19.760 --> 00:26.120
+I first calibrated the camera using open-cv, then collected my own images, created segmentation,
+
+00:26.120 --> 00:34.040
+annotation, entraned, a masked RNN, CRNN, RCNN model.
+
+00:34.040 --> 00:39.400
+Now I will demonstrate edge-in-measurement workflow using a new photograph.
+
+00:39.400 --> 00:44.360
+The system has now processed the photograph, it applies camera, undistortion, detective
+
+00:44.360 --> 00:50.720
+phone using segmentation model, identified the ARUCU reference marker and calculated
+
+00:50.720 --> 00:53.240
+the physical dimensions.
+
+00:53.240 --> 01:00.680
+The predicted length is in millimeters and the predicted edge-in-measurents are in millimeters.
+
+01:00.680 --> 01:07.280
+My physical reference measurements are 157 millimeters in length, 72 millimeters in width.
+
+01:07.280 --> 01:13.080
+This allows me to compare the computer vision result with the edge-in-measurent I mentioned.
+
+01:13.080 --> 01:16.800
+There are four main stages in my measurement pipeline.
+
+01:16.800 --> 01:19.960
+First is the camera calibration and undistortion.
+
+01:19.960 --> 01:26.320
+I used open-cv to estimate the camera metrics and distortion coefficient from 37-colibration
+
+01:26.320 --> 01:27.800
+photograph.
+
+01:27.800 --> 01:32.800
+These parameters are loaded by my measurements pipeline to correct length-distortion
+
+01:32.800 --> 01:35.000
+before measurement.
+
+01:35.000 --> 01:36.640
+Second is object segmentation.
+
+01:36.640 --> 01:41.640
+I used TorxVian, masked RCNN with less net 50 backbone.
+
+01:41.640 --> 01:46.960
+I trained the segmentation model using my own manually automated annotate smartphone
+
+01:46.960 --> 01:47.960
+images.
+
+01:47.960 --> 01:52.800
+This is identified the phone boundary and procedures as segment mass.
+
+01:52.800 --> 01:54.600
+Third is reference detection.
+
+01:54.600 --> 02:03.520
+I used an ARUCU marker with the dict 450 direct directory and marker ID 0.
+
+02:03.520 --> 02:07.560
+It is physically myriad dimension, provide the reference for metric measurement.
+
+02:07.560 --> 02:12.200
+Finally, the system calculates the object dimensions in millimeter using detected objects
+
+02:12.200 --> 02:14.720
+hungry and the reference geometry.
+
+02:14.720 --> 02:18.800
+The system also checks confidence and measurements conditions.
+
+02:18.800 --> 02:23.440
+When the phone or reference cannot be detect reliably, it refutes to provide measurement.
+
+02:23.440 --> 02:25.960
+K1 pixel to measurement convergent.
+
+02:25.960 --> 02:30.520
+The pixel to measurement convergent is implemented in the measurement interface code.
+
+02:30.520 --> 02:36.640
+The system code are well-non-physical dimension of ARUCU reference, multipersed, estimated
+
+02:36.640 --> 02:40.360
+scale between image coordinates and real-world measurements.
+
+02:40.360 --> 02:45.120
+Now this conversation to be valid, the camera must be calibrated, the reference dimension
+
+02:45.120 --> 02:51.560
+must be correct, and the reference a myriad object must be geometrically valid relationship.
+
+02:51.560 --> 02:55.920
+In particular, the plane height and a perspective assumption must be accounted for.
+
+02:55.920 --> 02:58.600
+K2 camera undistortioned.
+
+02:58.600 --> 03:03.000
+Undistortioned is applied before segmentation and measurement using the camera calibration
+
+03:03.000 --> 03:04.000
+parameters.
+
+03:04.000 --> 03:08.600
+I compared the same photograph using both the raw and undistortioned images.
+
+03:08.600 --> 03:16.240
+The average error of images while the average error and distortion image was in millimeters.
+
+03:16.240 --> 03:21.600
+My experiment shows that undistortioned the measurement accurately by millimeters.
+
+03:21.600 --> 03:25.840
+This is why camera calibration is important part in the physical measurement system.
+
+03:25.840 --> 03:28.400
+K3, one decision I will reverse.
+
+03:28.400 --> 03:33.080
+One decision I will reconsider the order in which the annotate my dataset.
+
+03:33.080 --> 03:36.280
+Initially, I labeled the original data as a photograph and then had the transfer
+
+03:36.280 --> 03:39.880
+and notation coordinate to measure the undistortioned images.
+
+03:39.880 --> 03:44.240
+If I was starting again, I would undistort the image before the annotation.
+
+03:44.240 --> 03:48.600
+The word simply the pipeline avoid additional coordinate transform, however changing the
+
+03:48.600 --> 03:53.520
+existing dataset would require repeatedly the annotation, work and verify the transform
+
+03:53.520 --> 03:54.520
+labels.
+
+03:54.520 --> 03:56.720
+K4, one thing I did not understand.
+
+03:56.720 --> 04:01.320
+One thing I initially did not fully understand was how the physical height difference between
+
+04:01.320 --> 04:04.720
+the phone and the reference market effect measurement accuracy.
+
+04:04.720 --> 04:08.920
+I initially treated this as an reference scale to simply.
+
+04:08.920 --> 04:13.360
+After investigating the camera's geometry, I understood that the reference market and
+
+04:13.360 --> 04:17.840
+the object and the reference reference from the camera can introduce scale errors.
+
+04:17.840 --> 04:23.120
+I investigated the plain height, correction and documentation assumption and limitation.
+
+04:23.120 --> 04:27.480
+This taught me to a good segmentation model along is not enough accurate physical measurement
+
+04:27.480 --> 04:33.560
+are also required correct calibration, reference geometry and experimented verification.
+
+04:33.560 --> 04:37.160
+Thanks for watching my exam years IT demonstration.
+

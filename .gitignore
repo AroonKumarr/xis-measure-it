@@ -57,8 +57,24 @@ dataset/undistorted/*.JPG
 dataset/undistorted/*.jpg
 calibration/images/*.JPG
 calibration/images/*.jpg
+calibration/outputs/undistorted_samples/*.JPG
+calibration/outputs/undistorted_samples/*.jpg
 
 # Local scratch and logs
 scratch/
 logs/
 *.log
+measurement/reports/test_scratch/
+measurement/reports/measure_*.json
+measurement/reports/measure_overlay_*.jpg
+
+# Canonical-name copies of fresh captures (originals tracked under IMG_8*.JPG)
+measurement/fresh_captures/fresh_*.jpg
+measurement/reports/fresh_comparisons/compare_fresh_*.jpg
+
+# Large video/audio recordings (local files)
+recording/*.mov
+recording/*.mp4
+recording/*.MOV
+recording/*.MP4
+recording/*.mp3

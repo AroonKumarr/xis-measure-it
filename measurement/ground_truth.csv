@@ -1,0 +1,7 @@
+dimension,nominal_value_mm,measurement_tool,tolerance_mm,notes
+phone_length,157.0,Caliper / Specification,0.5,Nominal length of Android smartphone along major axis
+phone_width,72.0,Caliper / Specification,0.5,Nominal width of Android smartphone along minor axis
+phone_thickness,8.0,Caliper / Depth Gauge,0.5,Elevation of phone back surface above tabletop plane (plane-offset delta_Z)
+phone_camera_bump,2.0,Caliper / Depth Gauge,0.3,Additional local protrusion at camera island
+aruco_marker_width,100.0,Ruler / Caliper,0.5,Nominal printed ArUco DICT_4X4_50 ID 0 marker square width
+aruco_marker_height,97.0,Ruler / Caliper,0.5,Measured printed marker height (printer aspect distortion ~3%)

@@ -1,0 +1,32 @@
+filename,calliper_length_mm,calliper_width_mm,calliper_thickness_mm,calliper_make_model,calibrated_uncertainty_mm,notes
+# ==================================================================================================
+# PHYSICAL GROUND TRUTH & TOOL CALIBRATION PARAMETERS (Assessment Requirement 5)
+#
+# 1. CONFIRMED PHYSICAL PHONE GROUND TRUTH:
+#    - Reference Length: 157.0 mm (Bare phone confirmed reference)
+#    - Reference Width:   72.0 mm (Bare phone confirmed reference)
+#
+# 2. PHYSICAL PARAMETERS TO BE VERIFIED WITH CALLIPER:
+#    - ACTUAL_PRINTED_ARUCO_BLACK_SQUARE_SIDE_MM = PENDING_MEASUREMENT (Nominal: 100.0 mm)
+#      [Measure outer black boundary detected by OpenCV ArUco corners]
+#    - ACTUAL_PHONE_PLANE_HEIGHT_OFFSET_DELTA_Z_MM = PENDING_MEASUREMENT (Nominal: 8.0 mm)
+#      [Measure height from tabletop surface to top surface of phone back]
+#    - ACTUAL_CHECKERBOARD_SQUARE_PITCH_MM = 20.0 mm (Nominal: 20.0 mm)
+#    - CALLIPER_TOOL_MAKE_MODEL = PENDING_CALLIPER_TOOL
+#    - CALLIPER_ESTIMATED_UNCERTAINTY_MM = 0.05 mm
+#
+# 3. ALTERNATIVE COPLANAR MEASUREMENT SETUP:
+#    If the ArUco marker is mounted on a rigid block flush with the phone back surface
+#    (Delta Z = 0.0 mm), set --phone-elevation-mm 0.0 to eliminate out-of-plane parallax entirely.
+# ==================================================================================================
+IMG_8164.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Low-tilt capture (8.9 deg) - best candidate
+IMG_8165.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Medium-tilt capture (18.5 deg)
+IMG_8166.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,High-tilt capture (25.9 deg)
+IMG_8168.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Medium-tilt capture (18.5 deg)
+IMG_8170.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Medium-tilt capture (10.1 deg)
+IMG_8171.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,High-tilt capture (22.1 deg)
+IMG_8173.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Low-tilt capture (5.9 deg)
+IMG_8174.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Medium-tilt capture (18.7 deg)
+IMG_8175.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,High-tilt capture (26.2 deg)
+IMG_8176.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,Medium-tilt capture (12.3 deg)
+IMG_8177.JPG,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.05,High-tilt capture (21.1 deg)
