@@ -17,8 +17,9 @@ The full codebase, mathematical formulation, empirical test reports, and Loom vi
 
 - **GitHub Repository:** [https://github.com/AroonKumarr/xis-measure-it](https://github.com/AroonKumarr/xis-measure-it)
 - **Pull Request (dev-test01 $\rightarrow$ main):** [https://github.com/AroonKumarr/xis-measure-it/pull/1](https://github.com/AroonKumarr/xis-measure-it/pull/1)
-- **Loom Video Demonstration (04:37):** [https://www.loom.com/share/placeholder-or-direct-link](https://www.loom.com/share/placeholder-or-direct-link)  
-  *(A broadcast-ready, loudness-normalized 1080p MP4 master is also preserved in the local project repository at `recording/FINAL_XIS_MEASURE_IT_LOOM.mp4`).*
+- **Loom Demonstration Video (04:37):** [https://www.loom.com/share/placeholder-or-direct-link](https://www.loom.com/share/placeholder-or-direct-link)
+- **Direct MP4 Video Master & GitHub Release:** [https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission](https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission)  
+  *(A broadcast-ready, loudness-normalized 1080p MP4 master is available via GitHub Releases and locally in `recording/FINAL_XIS_MEASURE_IT_LOOM.mp4`).*
 
 ---
 

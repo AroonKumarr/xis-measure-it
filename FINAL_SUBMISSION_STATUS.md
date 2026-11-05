@@ -112,6 +112,7 @@
 
 ## 9. Video Recording Audit & Loom Readiness
 - **Master Release Video:** `recording/FINAL_XIS_MEASURE_IT_LOOM.mp4`
+- **Hosted GitHub Release Asset:** [https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission](https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission)
 - **Duration:** **04:37.30** (277.30 seconds) — strictly $\le 5:00$ minutes.
 - **Audio:** 100% authentic candidate voice (Aroon Kumar), normalized to broadcast standard (-16 LUFS, true peak -1.5 dB).
 - **Video Format:** 1080x720 H.264, web faststart enabled.
@@ -125,7 +126,7 @@
 
 ## 10. Git Branch & Remote Configuration
 - **GitHub User:** Aroon Kumar (`AroonKumarr`)
-- **Remote URL:** `https://github.com/AroonKumarr/xis-measure-it.git`
+- **Remote Repository URL:** [https://github.com/AroonKumarr/xis-measure-it](https://github.com/AroonKumarr/xis-measure-it)
 - **Branch Strategy:**
   - `main`: Clean initial commit baseline (`f066649`).
   - `dev-test01`: Full assessment implementation, reports, scripts, and documentation.
@@ -133,9 +134,11 @@
 
 ---
 
-## 11. Pull Request Readiness
+## 11. Pull Request & Submission Links
 - **Source Branch:** `dev-test01`
 - **Target Branch:** `main`
+- **Live Pull Request URL:** [https://github.com/AroonKumarr/xis-measure-it/pull/1](https://github.com/AroonKumarr/xis-measure-it/pull/1)
+- **GitHub Release URL:** [https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission](https://github.com/AroonKumarr/xis-measure-it/releases/tag/v2.0-submission)
 - **PR Description File:** [`recording/READY_TO_SUBMIT.md`](file:///Users/aroonkumar/Developer/xis-measure-it/recording/READY_TO_SUBMIT.md)
 - **Submission Email Draft:** [`recording/FINAL_SUBMISSION_EMAIL.md`](file:///Users/aroonkumar/Developer/xis-measure-it/recording/FINAL_SUBMISSION_EMAIL.md)
 
