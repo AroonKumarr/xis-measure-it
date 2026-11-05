@@ -1,13 +1,19 @@
 filename,calliper_length_mm,calliper_width_mm,calliper_thickness_mm,calliper_make_model,calibrated_uncertainty_mm,notes
-# TEMPLATE: Fill in your actual physical calliper measurements for each newly captured photograph.
-# If you do not have digital callipers, record manual vernier or millimeter ruler readings and note the tool below.
-fresh_01.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_02.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_03.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_04.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_05.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_06.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_07.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_08.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_09.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
-fresh_10.jpg,157.0,72.0,8.0,Provisional Caliper / Reference,0.5,Physical Android smartphone nominal reference
+# ==================================================================================================
+# PHYSICAL CALLIPER MEASUREMENT RECORD (Assessment Requirement 5)
+# Fill in your actual physical vernier/digital calliper or mm ruler readings for each capture below.
+# Leave as PENDING_MEASUREMENT until you take your physical tool measurements.
+#
+# EXAMPLE FORMAT (replace with your tool and measured values):
+# example_capture.jpg,157.2,71.8,8.1,Mitutoyo Digital Caliper 500-196-30,0.02,Measured at 21C
+# ==================================================================================================
+fresh_01.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 1
+fresh_02.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 2
+fresh_03.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 3
+fresh_04.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 4
+fresh_05.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 5
+fresh_06.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 6
+fresh_07.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 7
+fresh_08.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 8
+fresh_09.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 9
+fresh_10.jpg,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_MEASUREMENT,PENDING_CALLIPER_TOOL,0.1,Physical capture 10

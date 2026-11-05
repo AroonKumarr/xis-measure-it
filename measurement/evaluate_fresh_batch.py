@@ -40,7 +40,7 @@ from inference.measure_image import (
 def load_calliper_ground_truth(csv_path: Path) -> dict:
     """
     Loads calliper measurements from CSV template.
-    Returns: dict mapping filename -> {calliper_length_mm, calliper_width_mm, notes}
+    Returns: dict mapping filename -> {length_mm, width_mm, notes, is_provisional}
     """
     calliper_dict = {}
     if not csv_path.exists():
@@ -53,13 +53,26 @@ def load_calliper_ground_truth(csv_path: Path) -> dict:
                 continue
             try:
                 fname = row[0].strip()
-                l_val = float(row[1].strip())
-                w_val = float(row[2].strip())
+                l_str = row[1].strip()
+                w_str = row[2].strip()
                 notes = row[6].strip() if len(row) > 6 else ""
+
+                if "PENDING" in l_str.upper() or "PENDING" in w_str.upper() or not l_str or not w_str:
+                    calliper_dict[fname] = {
+                        "length_mm": 157.0,
+                        "width_mm": 72.0,
+                        "notes": "Nominal reference (Pending Physical Calliper)",
+                        "is_provisional": True,
+                    }
+                    continue
+
+                l_val = float(l_str)
+                w_val = float(w_str)
                 calliper_dict[fname] = {
                     "length_mm": l_val,
                     "width_mm": w_val,
                     "notes": notes,
+                    "is_provisional": False,
                 }
             except (ValueError, IndexError):
                 continue
@@ -317,6 +330,7 @@ def main():
                 "trial": idx,
                 "filename": img_path.name,
                 "status": "SUCCESS",
+                "is_calliper_provisional": calip.get("is_provisional", False),
                 "calliper_length_mm": true_l,
                 "calliper_width_mm": true_w,
                 "raw_pred_length_mm": raw_metrics["length_mm"],
@@ -376,13 +390,17 @@ def main():
     print(f"Raw (Distorted) Length MAE    : {mean_raw_mae:.2f} mm")
     print(f"Undistortion Error Reduction  : Average +{avg_improvement:.2f} mm improvement")
     print(f"Instances Improved by Undist. : {improved_count}/{len(valid)} ({improved_count/len(valid)*100:.1f}%)")
+    has_provisional = any(r.get("is_calliper_provisional", False) for r in valid)
+    if has_provisional:
+        print("  * NOTE: Comparisons use nominal reference (157.0 x 72.0 mm) because calliper")
+        print("    measurements in measurement/calliper_measurements.csv are marked PENDING.")
     print("=" * 80)
 
     # Save results CSV
     csv_out = output_dir / "fresh_batch_results.csv"
     with open(csv_out, "w", newline="", encoding="utf-8") as f:
         fieldnames = [
-            "trial", "filename", "status", "calliper_length_mm", "calliper_width_mm",
+            "trial", "filename", "status", "is_calliper_provisional", "calliper_length_mm", "calliper_width_mm",
             "raw_pred_length_mm", "raw_pred_width_mm", "undist_pred_length_mm", "undist_pred_width_mm",
             "raw_length_error_mm", "undist_length_error_mm", "raw_width_error_mm", "undist_width_error_mm",
             "undist_length_error_pct", "undist_width_error_pct", "improvement_delta_mm",
@@ -399,6 +417,11 @@ def main():
         f.write("# Fresh Photograph Evaluation & Calliper Validation Report\n\n")
         f.write(f"**Generated:** {time.strftime('%Y-%m-%d %H:%M:%S')}  \n")
         f.write(f"**Instances Evaluated:** {len(valid)} / {len(results)}  \n\n")
+        if has_provisional:
+            f.write("> [!NOTE]\n")
+            f.write("> Comparisons in this report reflect nominal baseline dimensions (157.0 x 72.0 mm) because\n")
+            f.write("> calliper readings in `measurement/calliper_measurements.csv` are marked PENDING_MEASUREMENT.\n")
+            f.write("> Once physical callipers are measured by the operator, re-running this script updates with true calliper ground truth.\n\n")
         f.write("## 1. Requirement 5: Accuracy Against Calliper\n\n")
         f.write("| Trial # | Filename | Calliper Length (mm) | Pred. Length (mm) | Length Error (mm) | Length Error (%) | Calliper Width (mm) | Pred. Width (mm) | Width Error (mm) | Width Error (%) |\n")
         f.write("|:---:|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|\n")
