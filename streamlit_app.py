@@ -78,6 +78,27 @@ st.markdown(
 CALIB_PARAMS = REPO_ROOT / "calibration" / "outputs" / "camera_params.npz"
 MODEL_WEIGHTS = REPO_ROOT / "models" / "weights" / "best_maskrcnn_phone.pth"
 FRESH_DIR = REPO_ROOT / "measurement" / "fresh_captures"
+WEIGHTS_URL = "https://github.com/AroonKumarr/xis-measure-it/releases/download/v2.0-submission/best_maskrcnn_phone.pth"
+
+def ensure_model_weights():
+    if not MODEL_WEIGHTS.exists():
+        MODEL_WEIGHTS.parent.mkdir(parents=True, exist_ok=True)
+        import urllib.request
+        progress_bar = st.progress(0, text="Downloading trained model weights (168 MB) from GitHub Release...")
+        req = urllib.request.Request(WEIGHTS_URL, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req) as response, open(MODEL_WEIGHTS, "wb") as out_file:
+            total_size = int(response.headers.get("Content-Length", 176224965))
+            downloaded = 0
+            chunk_size = 1024 * 1024  # 1MB
+            while True:
+                chunk = response.read(chunk_size)
+                if not chunk:
+                    break
+                out_file.write(chunk)
+                downloaded += len(chunk)
+                pct = min(1.0, downloaded / total_size)
+                progress_bar.progress(pct, text=f"Downloading trained model weights ({downloaded // (1024*1024)} MB / {total_size // (1024*1024)} MB)...")
+        progress_bar.empty()
 
 @st.cache_resource
 def get_device():
@@ -89,6 +110,7 @@ def get_device():
 
 @st.cache_resource
 def get_pipeline():
+    ensure_model_weights()
     K, D, new_K, (w, h) = load_calibration(CALIB_PARAMS)
     device = get_device()
     model = load_model(MODEL_WEIGHTS, device)

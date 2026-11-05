@@ -39,7 +39,16 @@ app = Flask(__name__)
 CALIB_PARAMS = REPO_ROOT / "calibration" / "outputs" / "camera_params.npz"
 MODEL_WEIGHTS = REPO_ROOT / "models" / "weights" / "best_maskrcnn_phone.pth"
 FRESH_DIR = REPO_ROOT / "measurement" / "fresh_captures"
+WEIGHTS_URL = "https://github.com/AroonKumarr/xis-measure-it/releases/download/v2.0-submission/best_maskrcnn_phone.pth"
 
+def ensure_model_weights():
+    if not MODEL_WEIGHTS.exists():
+        MODEL_WEIGHTS.parent.mkdir(parents=True, exist_ok=True)
+        print("Downloading trained model weights (168 MB) from GitHub Release...")
+        import urllib.request
+        urllib.request.urlretrieve(WEIGHTS_URL, str(MODEL_WEIGHTS))
+
+ensure_model_weights()
 print("Loading calibration parameters...")
 K, D, NEW_K, (CALIB_W, CALIB_H) = load_calibration(CALIB_PARAMS)
 
