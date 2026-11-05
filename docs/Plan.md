@@ -14,8 +14,8 @@
 | **Phase 2: Camera Calibration** | Calibrate 37 checkerboard images ($20.0\times 20.0\text{ mm}$ pitch); export `camera_params.npz` | 1.0 h | 1.0 h | **DONE** (`258cf4a`) | **Mandatory (Item 1)** |
 | **Phase 3: Undistort & Annotate** | Undistort dataset; audit & verify 77 manual phone polygon annotations (COCO format) | 1.5 h | 1.5 h | **DONE** | **Mandatory (Item 2)** |
 | **Phase 4: Segmentation Model** | TorchVision Mask R-CNN ResNet-50-FPN trained on MPS (8 epochs, Best Val IoU: 0.9521) | 1.5 h | 1.5 h | **DONE** | **Mandatory (Item 3)** |
-| **Phase 5: Metric Pipeline** | Build `measurement/measure.py` & `inference/measure_image.py`: undistort, segment, ArUco, $\Delta Z$ compensation | 1.5 h | 1.5 h | **DONE** | **Mandatory (Item 4)** |
-| **Phase 6: Extended Benchmarks** | Execute 10 physical trials, Raw vs. Undistorted ablation, tilt breaking curve, refusal tests | 1.0 h | 1.0 h | **DONE** | **Extended (Items 5, 6, 8, 9)** |
+| **Phase 5: Metric Pipeline** | Build `measurement/measure.py` & `inference/measure_image.py`: fresh-photo workflow, HEIC conversion, $\Delta Z$ compensation | 1.5 h | 1.5 h | **DONE** | **Mandatory (Item 4)** |
+| **Phase 6: Extended Benchmarks** | Execute 10 physical trials, Raw vs. Undistorted ablation, lighting breaking curve, refusal tests | 1.0 h | 1.0 h | **DONE** | **Extended (Items 5, 6, 8, 9)** |
 | **Phase 7: Verification & Video** | Complete `docs/Objectives.md`, verify `docs/Definition_of_Done.md`, write Loom demo script | 1.0 h | 1.0 h | **DONE** | **Mandatory Delivery** |
 | **Total** | | **8.0 h** | **8.0 h** | **COMPLETE** | |
 
@@ -24,11 +24,11 @@
 ### 2. Optical, Physical & Coordinate Specifications
 - **Checkerboard Pitch:** Nominal $20.0 \times 20.0\text{ mm}$ pitch ($200\times 160\text{ mm}$ grid span across $10\times 8$ squares, $9\times 7$ inner corners). Reprojection RMS error: $1.6297\text{ px}$.
 - **Focus Lock Limitation:** EXIF confirms fixed $6.765\text{ mm}$ optical focal length. `SubjectDistance` is absent (standard iOS camera behavior); focus lock cannot be mathematically proven from EXIF alone.
-- **Orientation & Coordinate Frame:** OpenCV 4.10.0 `cv2.imread(..., cv2.IMREAD_COLOR)` automatically applies EXIF rotation to upright portrait $(5712, 4284, 3)$. Uniform coordinate convention enforced across calibration, undistortion, annotation, training, and inference.
+- **Orientation & Coordinate Frame:** OpenCV 4.10.0 `cv2.imread(..., cv2.IMREAD_COLOR)` automatically applies EXIF rotation to upright portrait $(5712, 4284, 3)$. Uniform coordinate convention enforced across calibration, undistortion, annotation, training, and inference. Landscape captures are automatically rotated $90^\circ$ clockwise to match the portrait calibration frame.
 - **Out-of-Plane Offset ($\Delta Z$):** The smartphone rests screen-down on the table. The phone back perimeter is elevated by body thickness ($\Delta Z_{\text{body}} \approx 8.0\text{ mm}$). The tabletop ArUco marker lies on $Z = Z_{\text{table}}$. The phone surface lies closer to the camera at $Z_{\text{phone}} = Z_{\text{table}} - 8.0\text{ mm}$. Our pipeline implements explicit plane-height offset correction:
   $$\text{Scale}_{\text{phone}} = \text{Scale}_{\text{table}} \times \left(1 - \frac{\Delta Z}{Z_{\text{table}}}\right)$$
   This eliminates the $\sim 2.0 - 2.5\%$ perspective overestimation error inherent in assuming tabletop coplanarity.
-- **Resolution Policy:** Primary evaluation conducted on native unbinned 24MP images ($4284 \times 5712$).
+- **Resolution Policy:** Native unbinned 24MP images ($4284 \times 5712$). If 12MP binned captures are provided, camera matrix $K$ is dynamically scaled by $(3024/4284, 4032/5712)$ to maintain metric consistency.
 
 ---
 

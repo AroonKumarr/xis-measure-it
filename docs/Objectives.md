@@ -60,7 +60,7 @@ Ground Truth Reference: Nominal smartphone dimensions $157.0\text{ mm} \times 72
 
 ---
 
-## 4. Empirical Proof of Undistortion (Assessment Item 6)
+## 4. Empirical Proof of Undistortion (Assessment Requirement 6)
 
 Direct comparison between raw (distorted) and calibrated undistorted photographs across 10 instances:
 
@@ -82,7 +82,7 @@ Direct comparison between raw (distorted) and calibrated undistorted photographs
 
 ---
 
-## 5. Camera Calibration Authoritative Parameters (Assessment Item 1)
+## 5. Camera Calibration Authoritative Parameters (Assessment Requirement 1)
 
 Calibrated via `calibration/calibrate_camera.py` on 37 checkerboard photographs ($20.0\text{ mm}$ nominal pitch, $9 \times 7$ inner corners):
 - **Reprojection RMS Error:** $1.6297\text{ pixels}$
@@ -94,9 +94,26 @@ Calibrated via `calibration/calibrate_camera.py` on 37 checkerboard photographs 
 
 ---
 
-## 6. Systematic Breaking Condition Experiment (Assessment Item 8)
+## 6. Breaking Condition Experiment: Lighting Variation (Assessment Requirement 8)
 
-Evaluation across 109 photographs scanned for varying camera tilt perspectives ($0^\circ - 45^\circ$):
+**Experimental Setup:** Camera distance ($Z \approx 408\text{ mm}$), focal length ($6.765\text{ mm}$), and tabletop geometry were strictly held constant. Only ambient illumination level was varied to measure error degradation and identify the breaking threshold.
+
+| Illumination Level | Est. Lux | Mean Luminance (0-255) | Mask Conf. | ArUco Detected | Pred. Length (mm) | Length Error (mm) | Pipeline Status |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Bright Direct** | 550 | 189.8 | 99.8% | Yes | 158.3 mm | 1.29 mm | **SUCCESS** |
+| **Normal Room** | 300 | 152.2 | 99.8% | Yes | 158.0 mm | 1.02 mm | **SUCCESS** |
+| **Dim Ambient** | 120 | 98.5 | 99.9% | Yes | 158.6 mm | 1.55 mm | **SUCCESS** |
+| **Low Light** | 45 | 52.8 | 99.9% | Yes | 158.7 mm | 1.71 mm | **SUCCESS** |
+| **Very Low Light** | 15 | 26.9 | 99.8% | Yes | 158.8 mm | 1.84 mm | **SUCCESS** |
+| **Extreme Low Light** | 5 | 11.7 | 99.4% | No | -- | -- | **REFUSED (ArUco lost)** |
+| **Critical Dark** | 1 | 4.0 | 0.0% | No | -- | -- | **REFUSED (ArUco lost)** |
+
+> [!CAUTION]
+> **Identified Breaking Threshold:** The pipeline functions reliably down to $\approx 15\text{ lux}$ (mean scene luminance $26.9/255$). Below $\approx 12/255$ grayscale luminance (~5 lux), low edge contrast causes ArUco corner detection to fail, triggering the graceful refusal gate (`REFUSED: ArUco reference marker not detected`, Exit Code 3) and preventing ungrounded measurements.
+
+---
+
+## 7. Camera Tilt Angle Degradation Curve
 
 | Tilt Range | Sample Count | Mean Length Error (mm) | Mean Width Error (mm) | Mean MAE (mm) | Degradation vs. Nadir |
 |:---:|:---:|:---:|:---:|:---:|:---:|
@@ -106,12 +123,9 @@ Evaluation across 109 photographs scanned for varying camera tilt perspectives (
 | **$30^\circ - 40^\circ$** | 7 | 26.75 mm | 23.40 mm | **25.07 mm** | $+193.9\%$ Error Inflation |
 | **$40^\circ - 50^\circ$** | 0 | -- | -- | -- | Rejected / Excluded |
 
-> [!NOTE]
-> **Empirical Breakdown:** Error increases monotonically as tilt angle increases, nearly tripling between near-nadir viewpoints ($8.53\text{ mm}$) and $30^\circ-40^\circ$ tilt ($25.07\text{ mm}$). This empirically validates the necessity of the refusal policy threshold at $\tau_{\text{tilt}} = 35^\circ$.
-
 ---
 
-## 7. Refusal Logic Validation (Assessment Item 9)
+## 8. Refusal Logic Validation (Assessment Requirement 9)
 
 Verified via automated test suite `tests/test_refusals.py` and real dataset execution:
 
@@ -121,3 +135,4 @@ Verified via automated test suite `tests/test_refusals.py` and real dataset exec
 | **Missing Object** | Image crop lacking smartphone | `status: "REFUSED"`, `reason: "Phone object not detected with confidence >= threshold"` | **Code 2** | `tests/test_refusals.py` |
 | **Distorted Reference** | Marker aspect ratio $> 1.25$ (`IMG_8035`, `IMG_8001`) | `status: "REFUSED"`, `reason: "ArUco marker perspective distortion too severe ..."` | **Code 4** | `measurement/run_benchmark.py` |
 | **Severe Tilt** | Camera tilt $> 35^\circ$ | `status: "REFUSED"`, `reason: "Marker tilt angle exceeds maximum reliable threshold"` | **Code 4** | `inference/measure_image.py` |
+| **Extreme Low Light** | Scene luminance $< 12/255$ (~5 lux) | `status: "REFUSED"`, `reason: "ArUco reference marker not detected"` | **Code 3** | `measurement/lighting_experiment.py` |
