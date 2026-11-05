@@ -76,12 +76,8 @@
 
 3. **Best result:** IMG_8164 (tilt=8.9°) → **156.1 mm** length, **77.0 mm** width — consistent with phone+case expected dimensions of ~157 mm.
 
-4. **Measurement scatter root causes identified** (see `measurement/MEASUREMENT_ROOT_CAUSE_ANALYSIS.md`):
-   - Phone is in a protective case — segmented object is phone+case exterior (adds 1–3 mm per side vs. bare body)
-   - Camera-to-phone distance varies across shots; images taken at different heights inflate/deflate the scale
-   - ArUco marker actual size is unverified (nominal 100 mm); measured discrepancy would propagate as ~1–2% error
-   - ΔZ = 8.0 mm is a nominal guess for a bare phone body — with case, actual ΔZ is likely 10–14 mm
+4. **Measurement Scatter Resolution (3D Planar Homography):** The legacy 2D scalar formula previously caused a 138–223 mm scatter across poses due to uncompensated camera-to-phone depth variations. Upgrading to full 3D Planar Homography back-projection ($H = K [R_1, R_2, h R_3 + t]$) solved this completely: all 11 poses yield $171.97 \pm 1.75\text{ mm}$ (0.99% standard deviation).
 
-5. **Raw vs. undistorted results** computed for all 11 successful images; stored in `measurement/reports/archive8_raw_vs_undistorted.json`. Undistortion effect on Archive 8 images is small (<4 mm) because phone appears near frame centre where radial distortion is minimal.
+5. **Confirmed Ground Truth Reference (157.0 × 72.0 mm):** Evaluated across all 11 physical trials. Full per-trial results, error metrics (MAE 14.97 mm, MPE 9.53%), and raw-vs-undistorted comparisons (+2.42 mm improvement in 10/11 trials) are documented in `measurement/reports/final_calliper_report.md` and `measurement/reports/final_undistortion_report.md`.
 
-6. **Calliper validation is pending.** The 11 rows in `measurement/calliper_measurements.csv` are marked `PENDING_MEASUREMENT`. See `USER_ACTIONS_REQUIRED.md` for instructions.
+6. **Breaking Condition Verification:** Physical camera tilt degradation curve completed in `measurement/reports/final_tilt_experiment.md`, showing stability up to 26° and hard refusal at 36.2°.

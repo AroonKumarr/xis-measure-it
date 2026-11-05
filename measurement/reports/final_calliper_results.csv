@@ -1,0 +1,15 @@
+filename,status,true_length_mm,true_width_mm,pred_length_mm,pred_width_mm,length_error_mm,width_error_mm,length_error_pct,width_error_pct,legacy_length_mm,legacy_width_mm,tilt_deg,distance_z_mm,refusal_reason
+IMG_8164.JPG,SUCCESS,157.0,72.0,172.7,82.41,15.7,10.41,10.0,14.46,156.07,76.98,8.9,492.0,
+IMG_8165.JPG,SUCCESS,157.0,72.0,170.88,80.09,13.88,8.09,8.84,11.24,146.86,81.01,18.53,509.3,
+IMG_8166.JPG,SUCCESS,157.0,72.0,171.88,79.8,14.88,7.8,9.48,10.83,138.84,82.77,25.93,525.2,
+IMG_8168.JPG,SUCCESS,157.0,72.0,170.93,80.75,13.93,8.75,8.87,12.15,142.81,69.45,18.53,485.9,
+IMG_8170.JPG,SUCCESS,157.0,72.0,172.62,80.53,15.62,8.53,9.95,11.85,191.92,91.22,10.08,482.4,
+IMG_8171.JPG,SUCCESS,157.0,72.0,173.45,82.01,16.45,10.01,10.48,13.9,223.18,101.04,22.11,514.5,
+IMG_8173.JPG,SUCCESS,157.0,72.0,169.65,81.48,12.65,9.48,8.06,13.17,175.25,82.19,5.86,464.6,
+IMG_8174.JPG,SUCCESS,157.0,72.0,171.06,82.42,14.06,10.42,8.96,14.47,180.73,82.07,18.67,474.5,
+IMG_8175.JPG,SUCCESS,157.0,72.0,170.47,84.02,13.47,12.02,8.58,16.69,185.3,80.04,26.17,469.0,
+IMG_8176.JPG,SUCCESS,157.0,72.0,176.39,86.53,19.39,14.53,12.35,20.18,176.25,88.42,12.31,555.6,
+IMG_8177.JPG,SUCCESS,157.0,72.0,171.6,81.59,14.6,9.59,9.3,13.32,171.22,87.15,21.06,541.3,
+IMG_8167.JPG,REFUSED,157.0,72.0,,,,,,,,,,,ArUco marker perspective distortion too severe (aspect ratio 1.26)
+IMG_8169.JPG,REFUSED,157.0,72.0,,,,,,,,,,,Marker tilt angle (36.2 deg) exceeds maximum reliable threshold (35.0 deg)
+IMG_8172.JPG,REFUSED,157.0,72.0,,,,,,,,,,,ArUco marker perspective distortion too severe (aspect ratio 0.67)

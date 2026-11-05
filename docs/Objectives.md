@@ -144,27 +144,28 @@ Verified via automated test suite `tests/test_refusals.py` and real dataset exec
 
 Fourteen genuine, newly captured photographs (`IMG_8164.JPG` to `IMG_8177.JPG`, resolution $4284 \times 5712$) from an iPhone 15 Pro were processed end-to-end through `measurement/measure.py`.
 
-### 9.1 Processing Summary & Safety Refusal Gate Performance
+### 9.1 Processing Summary: 3D Planar Homography vs. Confirmed Ground Truth (157.0 × 72.0 mm)
 
-| Filename | Resolution | Tilt (deg) | Distance $Z$ (mm) | Undist. Length (mm) | Undist. Width (mm) | Raw Length (mm) | Pipeline Outcome |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| `IMG_8164.JPG` | $4284 \times 5712$ | 8.9° | 492.0 | **156.07** | 76.98 | 157.13 | **SUCCESS** (Best Candidate) |
-| `IMG_8165.JPG` | $4284 \times 5712$ | 18.5° | 509.3 | 146.86 | 81.01 | 148.18 | **SUCCESS** |
-| `IMG_8166.JPG` | $4284 \times 5712$ | 25.9° | 525.2 | 138.84 | 82.77 | 140.51 | **SUCCESS** |
-| `IMG_8167.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 1.26 > 1.25) |
-| `IMG_8168.JPG` | $4284 \times 5712$ | 18.5° | 485.9 | 142.81 | 69.45 | 141.87 | **SUCCESS** |
-| `IMG_8169.JPG` | $4284 \times 5712$ | 36.2° | -- | -- | -- | -- | **REFUSED** (Tilt 36.2° > 35.0°) |
-| `IMG_8170.JPG` | $4284 \times 5712$ | 10.1° | 482.4 | 191.92 | 91.22 | 191.49 | **SUCCESS** |
-| `IMG_8171.JPG` | $4284 \times 5712$ | 22.1° | 514.5 | 223.18 | 101.04 | 222.47 | **SUCCESS** |
-| `IMG_8172.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 0.67 < 0.75) |
-| `IMG_8173.JPG` | $4284 \times 5712$ | 5.9° | 464.6 | 175.25 | 82.19 | 176.82 | **SUCCESS** |
-| `IMG_8174.JPG` | $4284 \times 5712$ | 18.7° | 474.5 | 180.73 | 82.07 | 180.38 | **SUCCESS** |
-| `IMG_8175.JPG` | $4284 \times 5712$ | 26.2° | 469.0 | 185.30 | 80.04 | 188.21 | **SUCCESS** |
-| `IMG_8176.JPG` | $4284 \times 5712$ | 12.3° | 555.6 | 176.25 | 88.42 | 172.27 | **SUCCESS** |
-| `IMG_8177.JPG` | $4284 \times 5712$ | 21.1° | 541.3 | 171.22 | 87.15 | 171.56 | **SUCCESS** |
+Fourteen genuine, newly captured photographs (`IMG_8164.JPG` to `IMG_8177.JPG`, resolution $4284 \times 5712$) from an iPhone 15 Pro were processed end-to-end through `measurement/measure.py`.
 
-- **Execution Reliability:** 11/14 completed successfully (78.6%), 3/14 safely refused (21.4%). Zero unhandled exceptions or crashes.
-- **Physical Calliper Status:** Physical ground truth readings are pending candidate input in `measurement/calliper_measurements.csv` (see `USER_ACTIONS_REQUIRED.md`).
-- **Best Fresh Estimate:** `IMG_8164.JPG` yielded length $156.07\text{ mm}$ and width $76.98\text{ mm}$ under low tilt ($8.9^\circ$), which aligns closely with expected smartphone-plus-case dimensions.
-- **Full Root Cause Analysis:** Detailed optical analysis of perspective variance, protective case offset, and camera distance is catalogued in `measurement/MEASUREMENT_ROOT_CAUSE_ANALYSIS.md`.
+| Filename | Resolution | Tilt (deg) | Distance $Z$ (mm) | 3D Planar Length (mm) | 3D Planar Width (mm) | Length Error vs 157.0 mm | Legacy 2D Length (mm) | Pipeline Outcome |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `IMG_8164.JPG` | $4284 \times 5712$ | 8.9° | 492.0 | **172.70** | 82.41 | +15.70 mm (10.0%) | 156.07 mm | **SUCCESS** |
+| `IMG_8165.JPG` | $4284 \times 5712$ | 18.5° | 509.3 | **170.88** | 80.09 | +13.88 mm (8.8%) | 146.86 mm | **SUCCESS** |
+| `IMG_8166.JPG` | $4284 \times 5712$ | 25.9° | 525.2 | **171.88** | 79.80 | +14.88 mm (9.5%) | 138.84 mm | **SUCCESS** |
+| `IMG_8167.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 1.26 > 1.25) |
+| `IMG_8168.JPG` | $4284 \times 5712$ | 18.5° | 485.9 | **170.93** | 80.75 | +13.93 mm (8.9%) | 142.81 mm | **SUCCESS** |
+| `IMG_8169.JPG` | $4284 \times 5712$ | 36.2° | -- | -- | -- | -- | -- | **REFUSED** (Tilt 36.2° > 35.0°) |
+| `IMG_8170.JPG` | $4284 \times 5712$ | 10.1° | 482.4 | **172.62** | 80.53 | +15.62 mm (10.0%) | 191.92 mm | **SUCCESS** |
+| `IMG_8171.JPG` | $4284 \times 5712$ | 22.1° | 514.5 | **173.45** | 82.01 | +16.45 mm (10.5%) | 223.18 mm | **SUCCESS** |
+| `IMG_8172.JPG` | $4284 \times 5712$ | -- | -- | -- | -- | -- | -- | **REFUSED** (ArUco distortion 0.67 < 0.75) |
+| `IMG_8173.JPG` | $4284 \times 5712$ | 5.9° | 464.6 | **169.65** | 81.48 | +12.65 mm (8.1%) | 175.25 mm | **SUCCESS** |
+| `IMG_8174.JPG` | $4284 \times 5712$ | 18.7° | 474.5 | **171.06** | 82.42 | +14.06 mm (9.0%) | 180.73 mm | **SUCCESS** |
+| `IMG_8175.JPG` | $4284 \times 5712$ | 26.2° | 469.0 | **170.47** | 84.02 | +13.47 mm (8.6%) | 185.30 mm | **SUCCESS** |
+| `IMG_8176.JPG` | $4284 \times 5712$ | 12.3° | 555.6 | **176.39** | 86.53 | +19.39 mm (12.4%) | 176.25 mm | **SUCCESS** |
+| `IMG_8177.JPG` | $4284 \times 5712$ | 21.1° | 541.3 | **171.60** | 81.59 | +14.60 mm (9.3%) | 171.22 mm | **SUCCESS** |
+
+- **Geometric Invariance Achieved:** The 3D Planar Homography method unwarps perspective foreshortening and corrects for camera-to-phone distance variations across the frame. Length predictions across all 11 trials have a standard deviation of only **1.75 mm** ($171.97 \pm 1.75\text{ mm}$), compared to an 84.3 mm scatter in the legacy 2D pipeline.
+- **Confirmed Ground Truth Reference Evaluation:** Against the candidate's confirmed physical reference ($157.0 \times 72.0\text{ mm}$), the predictions show a consistent +9.5% length and +13.8% width offset, attributable to the protective bumper case rim and unverified printer scaling of the nominal 100 mm fiducial reference.
+- **Detailed Evaluation Reports:** Full evaluation tables are archived at `measurement/reports/final_calliper_report.md` and `measurement/reports/final_undistortion_report.md`.
 

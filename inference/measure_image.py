@@ -175,27 +175,28 @@ def estimate_dimensions(
     marker_size_mm: float = 100.0,
     phone_elevation_mm: float = 8.0,
     max_tilt_deg: float = 35.0,
+    method: str = "planar_homography",
 ):
     """
-    Estimates phone dimensions in millimetres:
-      1. Solves solvePnP on ArUco marker to get distance Z_table.
-      2. Computes tilt angle between marker normal and camera axis.
-      3. Applies plane-height offset compensation:
-         Z_phone = Z_table - phone_elevation_mm
-         Scale_factor = (Z_table - phone_elevation_mm) / Z_table
-      4. Measures phone mask length and width in mm.
+    Estimates phone dimensions in millimetres.
+    Supports both:
+      1. 'planar_homography' (Primary, mathematically rigorous):
+         Projects phone contour onto the 3D metric plane defined by the ArUco pose
+         and out-of-plane elevation offset (h = phone_elevation_mm).
+         Provides perspective-invariant, distance-corrected physical dimensions.
+      2. 'legacy_2d':
+         Naive 2D pixel scale multiplication with scalar tabletop Z compensation.
     """
     # 1. Phone pixel geometry from binary mask
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     if not contours:
         return None, "Empty mask: no contours found"
 
-    # Select largest contour
     largest_cnt = max(contours, key=cv2.contourArea)
-    min_area_rect = cv2.minAreaRect(largest_cnt)
-    center, (dim1, dim2), angle = min_area_rect
-    length_px = max(dim1, dim2)
-    width_px = min(dim1, dim2)
+    rect_px = cv2.minAreaRect(largest_cnt)
+    center_px, (dim1_px, dim2_px), angle_px = rect_px
+    length_px = max(dim1_px, dim2_px)
+    width_px = min(dim1_px, dim2_px)
 
     if length_px < 50 or width_px < 20:
         return None, "Detected phone contour area is too small"
@@ -240,25 +241,54 @@ def estimate_dimensions(
     if tilt_deg > max_tilt_deg:
         return None, f"Marker tilt angle ({tilt_deg:.1f} deg) exceeds maximum reliable threshold ({max_tilt_deg:.1f} deg)"
 
-    # 4. Tabletop millimetre-to-pixel scale
+    # 4. Legacy 2D calculation (for comparison and ablation)
     scale_table_mm_per_px = s / mean_marker_side_px
-
-    # 5. Plane-Height Offset Compensation
-    # Phone back surface is elevated by phone_elevation_mm above the table
     z_phone = z_table - phone_elevation_mm
-    plane_scale_factor = z_phone / z_table  # < 1.0 because phone is closer to camera
-
+    plane_scale_factor = z_phone / z_table
     scale_phone_mm_per_px = scale_table_mm_per_px * plane_scale_factor
+    legacy_length_mm = length_px * scale_phone_mm_per_px
+    legacy_width_mm = width_px * scale_phone_mm_per_px
 
-    # 6. Physical Dimensions Calculation
-    length_mm = length_px * scale_phone_mm_per_px
-    width_mm = width_px * scale_phone_mm_per_px
+    # 5. 3D Planar Homography Metric Reconstruction
+    dot_prod = np.dot(R[:, 2], -tvec.ravel())
+    normal_sign = 1.0 if dot_prod > 0 else -1.0
+    h_elev = phone_elevation_mm * normal_sign
+    col2 = h_elev * R[:, 2:] + tvec
+    H = camera_matrix @ np.hstack([R[:, 0:1], R[:, 1:2], col2])
+    H_inv = np.linalg.inv(H)
+
+    pts_px = largest_cnt.reshape(-1, 2).astype(np.float32)
+    pts_homo = np.hstack([pts_px, np.ones((len(pts_px), 1), dtype=np.float32)])
+    pts_metric_homo = (H_inv @ pts_homo.T).T
+    pts_metric = pts_metric_homo[:, :2] / pts_metric_homo[:, 2:3]
+
+    rect_mm = cv2.minAreaRect(pts_metric.astype(np.float32))
+    center_m, (dim1_m, dim2_m), angle_m = rect_mm
+    planar_length_mm = max(dim1_m, dim2_m)
+    planar_width_mm = min(dim1_m, dim2_m)
+
+    # Perspective projection of metric bounding box onto image
+    box_pts_m = cv2.boxPoints(rect_mm)
+    box_pts_px = (H @ np.hstack([box_pts_m, np.ones((4, 1), dtype=np.float32)]).T).T
+    box_pts_px = box_pts_px[:, :2] / box_pts_px[:, 2:3]
+
+    if method == "legacy_2d":
+        final_l = legacy_length_mm
+        final_w = legacy_width_mm
+    else:
+        final_l = planar_length_mm
+        final_w = planar_width_mm
 
     return {
         "status": "SUCCESS",
-        "length_mm": round(length_mm, 2),
-        "width_mm": round(width_mm, 2),
-        "aspect_ratio": round(length_mm / width_mm, 3) if width_mm > 0 else 0.0,
+        "length_mm": round(final_l, 2),
+        "width_mm": round(final_w, 2),
+        "aspect_ratio": round(final_l / final_w, 3) if final_w > 0 else 0.0,
+        "method_used": method,
+        "planar_length_mm": round(planar_length_mm, 2),
+        "planar_width_mm": round(planar_width_mm, 2),
+        "legacy_2d_length_mm": round(legacy_length_mm, 2),
+        "legacy_2d_width_mm": round(legacy_width_mm, 2),
         "length_px": round(length_px, 1),
         "width_px": round(width_px, 1),
         "marker_side_mean_px": round(mean_marker_side_px, 1),
@@ -267,10 +297,11 @@ def estimate_dimensions(
         "plane_offset_applied_mm": phone_elevation_mm,
         "plane_scale_correction_ratio": round(plane_scale_factor, 4),
         "marker_tilt_deg": round(tilt_deg, 2),
+        "box_pts_px": box_pts_px.tolist(),
         "min_area_rect": {
-            "center": [round(center[0], 1), round(center[1], 1)],
-            "size": [round(dim1, 1), round(dim2, 1)],
-            "angle": round(angle, 2),
+            "center": [round(center_px[0], 1), round(center_px[1], 1)],
+            "size": [round(dim1_px, 1), round(dim2_px, 1)],
+            "angle": round(angle_px, 2),
         },
     }, None
 
@@ -301,8 +332,11 @@ def render_overlay(
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cv2.drawContours(blended, contours, -1, (255, 255, 0), 8)
 
-        # Oriented bounding box
-        if metrics and "min_area_rect" in metrics:
+        # Oriented bounding box (3D perspective quadrilateral or 2D minAreaRect)
+        if metrics and "box_pts_px" in metrics:
+            box_pts = np.int32(metrics["box_pts_px"])
+            cv2.polylines(blended, [box_pts], isClosed=True, color=(0, 140, 255), thickness=6)
+        elif metrics and "min_area_rect" in metrics:
             center = metrics["min_area_rect"]["center"]
             size = metrics["min_area_rect"]["size"]
             angle = metrics["min_area_rect"]["angle"]
@@ -370,6 +404,13 @@ def parse_args():
         type=float,
         default=8.0,
         help="Out-of-plane height difference between tabletop marker and phone back surface (mm).",
+    )
+    p.add_argument(
+        "--method",
+        type=str,
+        default="planar_homography",
+        choices=["planar_homography", "legacy_2d"],
+        help="Measurement mathematics: 'planar_homography' (3D metric plane) or 'legacy_2d' (naive pixel scale).",
     )
     p.add_argument("--conf-thresh", type=float, default=0.5, help="Detection confidence threshold.")
     p.add_argument("--device", type=str, default="auto", choices=["auto", "mps", "cpu"])
@@ -480,6 +521,7 @@ def main():
         camera_matrix=active_new_K,
         marker_size_mm=args.marker_size_mm,
         phone_elevation_mm=args.phone_elevation_mm,
+        method=args.method,
     )
 
     if err is not None:
@@ -529,11 +571,14 @@ def main():
     print(f"  Input Photograph   : {image_path.name} ({w}x{h})")
     print(f"  Pipeline Status    : SUCCESS")
     print("-" * 70)
-    print(f"  PHONE LENGTH       : {metrics['length_mm']:>6.1f} mm   (Target: ~157.0 mm)")
-    print(f"  PHONE WIDTH        : {metrics['width_mm']:>6.1f} mm   (Target:  ~72.0 mm)")
-    print(f"  ASPECT RATIO       : {metrics['aspect_ratio']:>6.2f}")
+    print(f"  PREDICTED LENGTH   : {metrics['length_mm']:>6.1f} mm   (Confirmed Ref: 157.0 mm)")
+    print(f"  PREDICTED WIDTH    : {metrics['width_mm']:>6.1f} mm   (Confirmed Ref:  72.0 mm)")
+    print(f"  ASPECT RATIO       : {metrics['aspect_ratio']:>6.2f}      (Reference Ratio: 2.18)")
     print("-" * 70)
-    print(f"  Reference Marker   : ArUco DICT_4X4_50 ID {marker_id}")
+    print(f"  Reconstruction     : 3D Planar Homography (Perspective-Invariant)")
+    print(f"  Planar Metric Dims : {metrics['planar_length_mm']:.1f} mm x {metrics['planar_width_mm']:.1f} mm")
+    print(f"  Legacy 2D Dims     : {metrics['legacy_2d_length_mm']:.1f} mm x {metrics['legacy_2d_width_mm']:.1f} mm")
+    print(f"  Reference Marker   : ArUco DICT_4X4_50 ID {marker_id} ({args.marker_size_mm:.1f} mm nominal)")
     print(f"  Camera Distance Z  : {metrics['distance_table_z_mm']:.1f} mm")
     print(f"  Plane Offset dZ    : {metrics['plane_offset_applied_mm']:.1f} mm (Z_phone = {metrics['distance_phone_z_mm']:.1f} mm)")
     print(f"  Perspective Tilt   : {metrics['marker_tilt_deg']:.1f}° (Safe threshold < 35.0°)")

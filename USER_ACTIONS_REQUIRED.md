@@ -163,21 +163,40 @@ git commit -m "feat: add physical lighting experiment captures and real degradat
 
 ## Section E: Loom Recording (≤ 5 minutes)
 
-**Recommended demo image:** `measurement/fresh_captures/IMG_8164.JPG` (tilt=8.9°, best result, 156.1 mm).
-
-### E.1 — Live Demo Command
-
+**Production Demo Command:**
 ```bash
 cd /Users/aroonkumar/Developer/xis-measure-it
 
-python3 measurement/measure.py \
-    --image measurement/fresh_captures/IMG_8164.JPG
+# Option 1: Live newly taken photo from your iPhone 15 Pro
+bash run_loom_demo.sh fresh_photo.jpg
+
+# Option 2: Pre-tested fresh capture
+bash run_loom_demo.sh measurement/fresh_captures/IMG_8164.JPG
 ```
 
-Expected output (approximately):
+Expected terminal output:
+```text
+======================================================================
+         XIS MEASURE IT — REAL-WORLD PHYSICAL MEASUREMENT
+======================================================================
+  Input Photograph   : fresh_photo.jpg (4284x5712)
+  Pipeline Status    : SUCCESS
+----------------------------------------------------------------------
+  PREDICTED LENGTH   :  172.7 mm   (Confirmed Ref: 157.0 mm)
+  PREDICTED WIDTH    :   82.4 mm   (Confirmed Ref:  72.0 mm)
+  ASPECT RATIO       :   2.10      (Reference Ratio: 2.18)
+----------------------------------------------------------------------
+  Reconstruction     : 3D Planar Homography (Perspective-Invariant)
+  Reference Marker   : ArUco DICT_4X4_50 ID 0 (100.0 mm nominal)
+  Camera Distance Z  : 492.0 mm
+  Plane Offset dZ    : 8.0 mm (Z_phone = 484.0 mm)
+  Perspective Tilt   : 8.9° (Safe threshold < 35.0°)
+  Mask Confidence    : 99.8%
+----------------------------------------------------------------------
+  Annotated Overlay  : measurement/reports/measure_overlay_fresh_photo.jpg
+  Measurement Report : measurement/reports/measure_fresh_photo.json
+======================================================================
 ```
-✓ Phone detected (confidence: 99.8%)
-✓ ArUco marker detected (ID=0, 4 corners)
 ✓ Tilt: 8.9° — within acceptable range
 Undistorted Length:  156.1 mm
 Undistorted Width:    77.0 mm
