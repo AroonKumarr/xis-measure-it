@@ -64,3 +64,4 @@ calibration/outputs/undistorted_samples/*.jpg
 scratch/
 logs/
 *.log
+measurement/reports/test_scratch/
