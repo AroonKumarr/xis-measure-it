@@ -1,0 +1,14 @@
+split,filename,status,length_mm,width_mm,aspect_ratio,length_error_mm,width_error_mm,length_error_pct,width_error_pct,distance_z_mm,tilt_deg,phone_confidence,latency_ms,undistorted,plane_offset,overlay_path,reason
+train,IMG_8019.JPG,SUCCESS,161.5,80.26,2.012,4.5,8.26,2.87,11.47,465.5,14.73,0.9985,931.7,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8019_undist.jpg,
+train,IMG_8022.JPG,SUCCESS,151.59,63.38,2.392,5.41,8.62,3.45,11.97,337.7,9.38,0.9984,638.0,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8022_undist.jpg,
+train,IMG_8030.JPG,SUCCESS,161.57,71.56,2.258,4.57,0.44,2.91,0.61,394.7,5.94,0.9991,697.9,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8030_undist.jpg,
+train,IMG_8035.JPG,REFUSED,,,,,,,,,,,690.4,,,,ArUco marker perspective distortion too severe (aspect ratio 1.25)
+train,IMG_8072.JPG,SUCCESS,158.02,69.92,2.26,1.02,2.08,0.65,2.89,407.6,8.33,0.9985,604.8,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8072_undist.jpg,
+val,IMG_7993.JPG,SUCCESS,176.11,87.69,2.008,19.11,15.69,12.17,21.79,415.0,22.07,0.9987,777.9,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_7993_undist.jpg,
+val,IMG_8001.JPG,REFUSED,,,,,,,,,,,660.1,,,,ArUco marker perspective distortion too severe (aspect ratio 1.39)
+val,IMG_8010.JPG,SUCCESS,195.81,86.06,2.275,38.81,14.06,24.72,19.53,372.1,12.17,0.9976,676.7,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8010_undist.jpg,
+val,IMG_8015.JPG,REFUSED,,,,,,,,,,,558.4,,,,ArUco marker perspective distortion too severe (aspect ratio 0.56)
+val,IMG_8018.JPG,SUCCESS,154.92,65.49,2.365,2.08,6.51,1.32,9.04,361.4,10.13,0.9988,607.3,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8018_undist.jpg,
+test,IMG_8057.JPG,SUCCESS,167.12,77.92,2.145,10.12,5.92,6.45,8.22,521.3,4.45,0.9982,557.7,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8057_undist.jpg,
+test,IMG_8061.JPG,SUCCESS,165.91,78.29,2.119,8.91,6.29,5.68,8.74,541.8,5.53,0.9989,556.4,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8061_undist.jpg,
+test,IMG_8147.JPG,SUCCESS,130.27,61.92,2.104,26.73,10.08,17.03,14.0,425.1,19.96,0.9979,554.7,True,True,/Users/aroonkumar/Developer/xis-measure-it/measurement/reports/overlay_IMG_8147_undist.jpg,

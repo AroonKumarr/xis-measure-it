@@ -1,0 +1,158 @@
+{
+  "timestamp": "2026-11-05T06:57:49",
+  "total_tested": 15,
+  "total_success": 10,
+  "nominal_target": {
+    "length_mm": 157.0,
+    "width_mm": 72.0
+  },
+  "mean_measured": {
+    "length_mm": 162.28,
+    "width_mm": 74.25
+  },
+  "mae_mm": {
+    "length": 12.13,
+    "width": 7.79
+  },
+  "mpe_pct": {
+    "length": 7.72,
+    "width": 10.83
+  },
+  "latency_ms": {
+    "median": 602.0,
+    "mean": 613.8,
+    "std": 20.1
+  },
+  "comparisons": [
+    {
+      "filename": "IMG_8019.JPG",
+      "split": "train",
+      "undist_length": 161.5,
+      "raw_length": 162.92,
+      "no_offset_length": 164.32,
+      "undist_width": 80.26,
+      "raw_width": 81.33,
+      "no_offset_width": 81.66,
+      "undist_l_err": 4.5,
+      "raw_l_err": 5.92,
+      "no_offset_l_err": 7.32
+    },
+    {
+      "filename": "IMG_8022.JPG",
+      "split": "train",
+      "undist_length": 151.59,
+      "raw_length": 151.45,
+      "no_offset_length": 155.27,
+      "undist_width": 63.38,
+      "raw_width": 62.5,
+      "no_offset_width": 64.92,
+      "undist_l_err": 5.41,
+      "raw_l_err": 5.55,
+      "no_offset_l_err": 1.73
+    },
+    {
+      "filename": "IMG_8030.JPG",
+      "split": "train",
+      "undist_length": 161.57,
+      "raw_length": 163.22,
+      "no_offset_length": 164.91,
+      "undist_width": 71.56,
+      "raw_width": 72.47,
+      "no_offset_width": 73.04,
+      "undist_l_err": 4.57,
+      "raw_l_err": 6.22,
+      "no_offset_l_err": 7.91
+    },
+    {
+      "filename": "IMG_8072.JPG",
+      "split": "train",
+      "undist_length": 158.02,
+      "raw_length": 160.06,
+      "no_offset_length": 161.18,
+      "undist_width": 69.92,
+      "raw_width": 70.71,
+      "no_offset_width": 71.32,
+      "undist_l_err": 1.02,
+      "raw_l_err": 3.06,
+      "no_offset_l_err": 4.18
+    },
+    {
+      "filename": "IMG_7993.JPG",
+      "split": "val",
+      "undist_length": 176.11,
+      "raw_length": 176.23,
+      "no_offset_length": 179.57,
+      "undist_width": 87.69,
+      "raw_width": 89.54,
+      "no_offset_width": 89.42,
+      "undist_l_err": 19.11,
+      "raw_l_err": 19.23,
+      "no_offset_l_err": 22.57
+    },
+    {
+      "filename": "IMG_8010.JPG",
+      "split": "val",
+      "undist_length": 195.81,
+      "raw_length": 193.22,
+      "no_offset_length": 200.11,
+      "undist_width": 86.06,
+      "raw_width": 86.28,
+      "no_offset_width": 87.95,
+      "undist_l_err": 38.81,
+      "raw_l_err": 36.22,
+      "no_offset_l_err": 43.11
+    },
+    {
+      "filename": "IMG_8018.JPG",
+      "split": "val",
+      "undist_length": 154.92,
+      "raw_length": 157.23,
+      "no_offset_length": 158.42,
+      "undist_width": 65.49,
+      "raw_width": 66.01,
+      "no_offset_width": 66.97,
+      "undist_l_err": 2.08,
+      "raw_l_err": 0.23,
+      "no_offset_l_err": 1.42
+    },
+    {
+      "filename": "IMG_8057.JPG",
+      "split": "test",
+      "undist_length": 167.12,
+      "raw_length": 168.66,
+      "no_offset_length": 169.72,
+      "undist_width": 77.92,
+      "raw_width": 78.25,
+      "no_offset_width": 79.14,
+      "undist_l_err": 10.12,
+      "raw_l_err": 11.66,
+      "no_offset_l_err": 12.72
+    },
+    {
+      "filename": "IMG_8061.JPG",
+      "split": "test",
+      "undist_length": 165.91,
+      "raw_length": 167.05,
+      "no_offset_length": 168.4,
+      "undist_width": 78.29,
+      "raw_width": 79.32,
+      "no_offset_width": 79.46,
+      "undist_l_err": 8.91,
+      "raw_l_err": 10.05,
+      "no_offset_l_err": 11.4
+    },
+    {
+      "filename": "IMG_8147.JPG",
+      "split": "test",
+      "undist_length": 130.27,
+      "raw_length": 131.11,
+      "no_offset_length": 132.77,
+      "undist_width": 61.92,
+      "raw_width": 62.46,
+      "no_offset_width": 63.11,
+      "undist_l_err": 26.73,
+      "raw_l_err": 25.89,
+      "no_offset_l_err": 24.23
+    }
+  ]
+}
