@@ -112,13 +112,33 @@ def load_model(weights_path: Path, device: torch.device):
     return model
 
 
-def detect_phone(model, img_rgb: np.ndarray, device: torch.device, conf_thresh: float = 0.5):
+def detect_phone(
+    model,
+    img_rgb: np.ndarray,
+    device: torch.device,
+    conf_thresh: float = 0.5,
+    max_dim: int = 1200,
+):
     """
     Runs Mask R-CNN and extracts best phone mask.
+    Downsamples image if larger than max_dim to prevent CPU Out-Of-Memory (OOM)
+    crashes on memory-constrained environments (e.g. Streamlit Cloud 1GB limit),
+    then upsamples predicted mask back to original resolution.
     Returns (pred_mask, bbox, score) or (None, None, 0.0).
     """
     h, w = img_rgb.shape[:2]
-    img_tensor = torch.from_numpy(img_rgb).permute(2, 0, 1).float() / 255.0
+    orig_h, orig_w = h, w
+
+    scale = 1.0
+    if max_dim is not None and max(h, w) > max_dim:
+        scale = max_dim / float(max(h, w))
+        target_w = int(w * scale)
+        target_h = int(h * scale)
+        img_input = cv2.resize(img_rgb, (target_w, target_h), interpolation=cv2.INTER_AREA)
+    else:
+        img_input = img_rgb
+
+    img_tensor = torch.from_numpy(img_input).permute(2, 0, 1).float() / 255.0
     img_tensor = img_tensor.to(device)
 
     with torch.no_grad():
@@ -137,8 +157,15 @@ def detect_phone(model, img_rgb: np.ndarray, device: torch.device, conf_thresh: 
 
     best_idx = valid[0]
     best_score = float(scores[best_idx])
-    best_box = boxes[best_idx].tolist()
-    pred_mask = (masks[best_idx, 0] >= 0.5).astype(np.uint8)
+    box_scaled = boxes[best_idx].tolist()
+    pred_mask_small = (masks[best_idx, 0] >= 0.5).astype(np.uint8)
+
+    if scale != 1.0:
+        pred_mask = cv2.resize(pred_mask_small, (orig_w, orig_h), interpolation=cv2.INTER_NEAREST)
+        best_box = [coord / scale for coord in box_scaled]
+    else:
+        pred_mask = pred_mask_small
+        best_box = box_scaled
 
     return pred_mask, best_box, best_score
 

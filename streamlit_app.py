@@ -238,13 +238,21 @@ with st.spinner("Processing image through Mask R-CNN and Homography engine..."):
     mask, box, conf = detect_phone(MODEL, undist_rgb, DEVICE, conf_thresh=conf_thresh)
     marker_corners, marker_id = detect_aruco_marker(undist_bgr)
 
+# Downsample previews for fast display and strict low-memory footprint
+def get_display_preview(img: np.ndarray, max_dim: int = 1280) -> np.ndarray:
+    ih, iw = img.shape[:2]
+    if max(ih, iw) > max_dim:
+        s = max_dim / float(max(ih, iw))
+        return cv2.resize(img, (int(iw * s), int(ih * s)), interpolation=cv2.INTER_AREA)
+    return img
+
 # Validation & Refusal Handling
 if mask is None:
     st.markdown(
         f'<div class="refusal-alert">⚠️ REFUSED: Phone object not detected with confidence &ge; {conf_thresh:.2f}.</div>',
         unsafe_allow_html=True,
     )
-    st.image(undist_rgb, caption=f"Undistorted Input: {image_name}", use_column_width=True)
+    st.image(get_display_preview(undist_rgb), caption=f"Undistorted Input: {image_name}", use_container_width=True)
     st.stop()
 
 if marker_corners is None:
@@ -252,7 +260,7 @@ if marker_corners is None:
         '<div class="refusal-alert">⚠️ REFUSED: ArUco fiducial marker (DICT_4X4_50 ID 0) not detected in frame.</div>',
         unsafe_allow_html=True,
     )
-    st.image(undist_rgb, caption=f"Undistorted Input: {image_name}", use_column_width=True)
+    st.image(get_display_preview(undist_rgb), caption=f"Undistorted Input: {image_name}", use_container_width=True)
     st.stop()
 
 metrics, refusal = estimate_dimensions(
@@ -270,7 +278,7 @@ if refusal is not None:
         f'<div class="refusal-alert">⚠️ REFUSED: {refusal}</div>',
         unsafe_allow_html=True,
     )
-    st.image(undist_rgb, caption=f"Refusal Frame: {image_name}", use_column_width=True)
+    st.image(get_display_preview(undist_rgb), caption=f"Refusal Frame: {image_name}", use_container_width=True)
     st.stop()
 
 # Successful Measurement
@@ -307,10 +315,10 @@ overlay_rgb = cv2.cvtColor(overlay_bgr, cv2.COLOR_BGR2RGB)
 tab_overlay, tab_raw, tab_data = st.tabs(["📸 Annotated Measurement Overlay", "🖼️ Raw / Undistorted Input", "📊 Technical Diagnostics"])
 
 with tab_overlay:
-    st.image(overlay_rgb, caption=f"3D Planar Homography Reconstruction — {image_name}", use_column_width=True)
+    st.image(get_display_preview(overlay_rgb), caption=f"3D Planar Homography Reconstruction — {image_name}", use_container_width=True)
 
 with tab_raw:
-    st.image(undist_rgb, caption=f"Rectilinear Undistorted Frame — {image_name}", use_column_width=True)
+    st.image(get_display_preview(undist_rgb), caption=f"Rectilinear Undistorted Frame — {image_name}", use_container_width=True)
 
 with tab_data:
     st.subheader("Diagnostic Telemetry")
@@ -343,3 +351,7 @@ with tab_data:
         file_name=f"measure_{Path(image_name).stem}.json",
         mime="application/json",
     )
+
+# Force garbage collection to prevent memory accumulation on Streamlit Cloud 1GB container
+import gc
+gc.collect()
