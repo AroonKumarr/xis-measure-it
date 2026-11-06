@@ -9,6 +9,7 @@ Memory Footprint: < 70 MB Peak (Strictly safe for Streamlit Cloud 1GB limit)
 
 import sys
 import gc
+import io
 import json
 import urllib.request
 import urllib.error
@@ -17,7 +18,14 @@ import numpy as np
 import cv2
 import torch
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageOps
+
+# Transparent cross-platform support for Apple HEIC / HEIF format
+try:
+    import pillow_heif
+    pillow_heif.register_heif_opener()
+except ImportError:
+    pass
 
 # Ensure repository root is on Python path
 REPO_ROOT = Path(__file__).resolve().parent
@@ -83,6 +91,42 @@ FRESH_DIR = REPO_ROOT / "measurement" / "fresh_captures"
 WEIGHTS_URL = "https://github.com/AroonKumarr/xis-measure-it/releases/download/v2.0-submission/best_maskrcnn_phone.pth"
 EXPECTED_WEIGHTS_SIZE = 176224965  # Exact bytes of trained Mask R-CNN weights
 MAX_PROCESSING_DIM = 1440          # Scale-invariant processing size for low RAM (<70MB)
+
+def load_and_preprocess_image(source_bytes_or_path, max_dim=MAX_PROCESSING_DIM):
+    """
+    Decodes any image (JPG, PNG, Apple HEIC/HEIF) in low memory (< 5 MB).
+    Applies EXIF orientation (fixes iPhone rotation tags) and scales down
+    in PIL before converting to NumPy, keeping memory strictly bounded.
+    Returns: (proc_bgr, (orig_w, orig_h))
+    """
+    if isinstance(source_bytes_or_path, (str, Path)):
+        pil_img = Image.open(str(source_bytes_or_path))
+    else:
+        pil_img = Image.open(io.BytesIO(source_bytes_or_path))
+
+    # Apply iPhone EXIF rotation tags automatically
+    pil_img = ImageOps.exif_transpose(pil_img)
+    pil_img = pil_img.convert("RGB")
+
+    orig_w, orig_h = pil_img.size
+    # Ensure portrait orientation
+    if orig_w > orig_h:
+        pil_img = pil_img.rotate(270, expand=True)
+        orig_w, orig_h = orig_h, orig_w
+
+    # Scale in PIL before converting to numpy to prevent memory allocation spikes
+    scale = min(1.0, float(max_dim) / float(max(orig_h, orig_w)))
+    if scale < 1.0:
+        proc_w = int(orig_w * scale)
+        proc_h = int(orig_h * scale)
+        pil_img = pil_img.resize((proc_w, proc_h), Image.Resampling.BILINEAR)
+
+    # Convert to BGR for OpenCV
+    img_rgb = np.array(pil_img)
+    proc_bgr = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2BGR)
+
+    del pil_img, img_rgb
+    return proc_bgr, (orig_w, orig_h)
 
 def ensure_model_weights():
     """
@@ -176,19 +220,28 @@ if source_option == "Included Physical Captures (Archive 8)":
         index=sample_images.index("IMG_8164.JPG") if "IMG_8164.JPG" in sample_images else 0,
     )
     img_path = FRESH_DIR / selected_sample
-    raw_bgr, was_rot, is_h = load_fresh_image(img_path)
+    scaled_bgr, (orig_w, orig_h) = load_and_preprocess_image(img_path)
     image_name = selected_sample
 else:
     uploaded_file = st.sidebar.file_uploader(
         "Upload iPhone Photo",
         type=["jpg", "jpeg", "png", "heic", "HEIC"],
+        help="Supports native iPhone 24MP photos and Apple HEIC/HEIF format directly.",
     )
     if uploaded_file is not None:
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        raw_bgr = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
         image_name = uploaded_file.name
+        file_bytes = uploaded_file.getvalue()
+        try:
+            scaled_bgr, (orig_w, orig_h) = load_and_preprocess_image(file_bytes)
+            st.sidebar.success(f"✓ Loaded {image_name} ({orig_w}x{orig_h} px)")
+        except Exception as e:
+            st.error(f"Error decoding uploaded image: {e}")
+            st.stop()
+        finally:
+            del file_bytes
+            gc.collect()
     else:
-        st.info("👈 Upload an image or select an included physical capture to begin.")
+        st.info("👈 Upload an iPhone photograph (.JPG / .HEIC) or select an included physical capture to begin.")
         st.stop()
 
 st.sidebar.subheader("📐 Algorithm Settings")
@@ -236,26 +289,7 @@ st.sidebar.markdown(
     """
 )
 
-if raw_bgr is None:
-    st.warning("Could not read image.")
-    st.stop()
-
-# Auto-orientation to portrait
-orig_h, orig_w = raw_bgr.shape[:2]
-if orig_w > orig_h:
-    raw_bgr = cv2.rotate(raw_bgr, cv2.ROTATE_90_CLOCKWISE)
-    orig_h, orig_w = raw_bgr.shape[:2]
-
-# Scale-Invariant Geometry Adaptation
-# Downsamples high-resolution 24MP images to MAX_PROCESSING_DIM to guarantee peak memory < 70MB.
-# Intrinsic camera matrix K is scaled proportionally so all metric results remain mathematically exact.
-scale = min(1.0, float(MAX_PROCESSING_DIM) / float(max(orig_h, orig_w)))
-proc_w, proc_h = int(orig_w * scale), int(orig_h * scale)
-
-if scale < 1.0:
-    scaled_bgr = cv2.resize(raw_bgr, (proc_w, proc_h), interpolation=cv2.INTER_AREA)
-else:
-    scaled_bgr = raw_bgr
+proc_h, proc_w = scaled_bgr.shape[:2]
 
 scaled_K = K.copy()
 scaled_K[0, 0] *= (proc_w / float(CALIB_W))

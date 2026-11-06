@@ -18,6 +18,13 @@ import numpy as np
 import cv2
 import torch
 from flask import Flask, request, jsonify, render_template_string, send_file
+from PIL import Image, ImageOps
+
+try:
+    import pillow_heif
+    pillow_heif.register_heif_opener()
+except ImportError:
+    pass
 
 REPO_ROOT = Path(__file__).resolve().parent
 if str(REPO_ROOT) not in sys.path:
@@ -32,6 +39,34 @@ from inference.measure_image import (
     render_overlay,
     load_fresh_image,
 )
+
+MAX_PROCESSING_DIM = 1440
+
+def load_and_preprocess_image(source_bytes_or_path, max_dim=MAX_PROCESSING_DIM):
+    if isinstance(source_bytes_or_path, (str, Path)):
+        pil_img = Image.open(str(source_bytes_or_path))
+    else:
+        pil_img = Image.open(io.BytesIO(source_bytes_or_path))
+
+    pil_img = ImageOps.exif_transpose(pil_img)
+    pil_img = pil_img.convert("RGB")
+
+    orig_w, orig_h = pil_img.size
+    if orig_w > orig_h:
+        pil_img = pil_img.rotate(270, expand=True)
+        orig_w, orig_h = orig_h, orig_w
+
+    scale = min(1.0, float(max_dim) / float(max(orig_h, orig_w)))
+    if scale < 1.0:
+        proc_w = int(orig_w * scale)
+        proc_h = int(orig_h * scale)
+        pil_img = pil_img.resize((proc_w, proc_h), Image.Resampling.BILINEAR)
+
+    img_rgb = np.array(pil_img)
+    proc_bgr = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2BGR)
+
+    del pil_img, img_rgb
+    return proc_bgr, (orig_w, orig_h)
 
 app = Flask(__name__)
 
@@ -441,45 +476,32 @@ def api_measure():
     elevation_mm = float(request.form.get("elevation", 8.0))
     max_tilt_deg = float(request.form.get("max_tilt", 35.0))
 
-    if "file" in request.files and request.files["file"].filename != "":
-        uploaded_file = request.files["file"]
-        file_bytes = uploaded_file.read()
-        nparr = np.frombuffer(file_bytes, np.uint8)
-        raw_bgr = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        filename = uploaded_file.filename
-    else:
-        sample_name = request.form.get("sample", "IMG_8164.JPG")
-        img_path = FRESH_DIR / sample_name
-        raw_bgr, was_rot, is_h = load_fresh_image(img_path)
-        filename = sample_name
+    try:
+        if "file" in request.files and request.files["file"].filename != "":
+            uploaded_file = request.files["file"]
+            file_bytes = uploaded_file.read()
+            scaled_bgr, (orig_w, orig_h) = load_and_preprocess_image(file_bytes)
+            filename = uploaded_file.filename
+            del file_bytes
+        else:
+            sample_name = request.form.get("sample", "IMG_8164.JPG")
+            img_path = FRESH_DIR / sample_name
+            scaled_bgr, (orig_w, orig_h) = load_and_preprocess_image(img_path)
+            filename = sample_name
+    except Exception as e:
+        return jsonify({"status": "REFUSED", "reason": f"Failed to decode image: {e}", "filename": "error"})
 
-    if raw_bgr is None:
-        return jsonify({"status": "REFUSED", "reason": "Failed to decode input image", "filename": filename})
+    proc_h, proc_w = scaled_bgr.shape[:2]
+    h, w = proc_h, proc_w
 
-    h, w = raw_bgr.shape[:2]
+    scaled_K = K.copy()
+    scaled_K[0, 0] *= (proc_w / float(CALIB_W))
+    scaled_K[0, 2] *= (proc_w / float(CALIB_W))
+    scaled_K[1, 1] *= (proc_h / float(CALIB_H))
+    scaled_K[1, 2] *= (proc_h / float(CALIB_H))
+    active_new_K, _ = cv2.getOptimalNewCameraMatrix(scaled_K, D, (proc_w, proc_h), alpha=1.0)
 
-    # Handle portrait orientation
-    if w > h:
-        raw_bgr = cv2.rotate(raw_bgr, cv2.ROTATE_90_CLOCKWISE)
-        h, w = raw_bgr.shape[:2]
-
-    # Undistort with camera calibration parameters
-    if (w, h) == (CALIB_W, CALIB_H):
-        active_K = K
-        active_new_K = NEW_K
-        undist_bgr = cv2.undistort(raw_bgr, K, D, None, NEW_K)
-    else:
-        scale_x = w / CALIB_W
-        scale_y = h / CALIB_H
-        scaled_K = K.copy()
-        scaled_K[0, 0] *= scale_x
-        scaled_K[0, 2] *= scale_x
-        scaled_K[1, 1] *= scale_y
-        scaled_K[1, 2] *= scale_y
-        active_new_K, _ = cv2.getOptimalNewCameraMatrix(scaled_K, D, (w, h), alpha=1.0)
-        active_K = scaled_K
-        undist_bgr = cv2.undistort(raw_bgr, scaled_K, D, None, active_new_K)
-
+    undist_bgr = cv2.undistort(scaled_bgr, scaled_K, D, None, active_new_K)
     undist_rgb = cv2.cvtColor(undist_bgr, cv2.COLOR_BGR2RGB)
 
     # Detect phone
